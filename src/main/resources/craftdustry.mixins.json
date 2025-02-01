@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "org.minetrio1256.craftdustry.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "craftdustry.refmap.json",
+  "mixins": [
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
