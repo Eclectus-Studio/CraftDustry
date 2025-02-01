@@ -26,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import org.minetrio1256.craftdustry.block.custom.belts.Belts;
+import org.minetrio1256.craftdustry.block.custom.belts.ExpressBelts;
 import org.minetrio1256.craftdustry.block.custom.belts.FastBelts;
 import org.minetrio1256.craftdustry.block.entity.modBlockEntities;
 import org.minetrio1256.craftdustry.block.modBlocks;
@@ -203,6 +204,30 @@ public class BeltsBlockEntity extends BlockEntity implements MenuProvider {
             BlockEntity targetBlockEntity = level.getBlockEntity(targetPos);
             if (targetBlockEntity instanceof FastBeltsBlockEntity) {
                 FastBeltsBlockEntity targetBeltsEntity = (FastBeltsBlockEntity) targetBlockEntity;
+                ItemStackHandler beltItemHandler = targetBeltsEntity.itemHandler;
+
+                // Loop over each slot in the current belt
+                for (int i = 0; i < itemHandler.getSlots(); i++) {
+                    if (!itemHandler.getStackInSlot(i).isEmpty()) {
+                        // Find the first empty slot in the target belt
+                        for (int beltTargetSlot = 0; beltTargetSlot < beltItemHandler.getSlots(); beltTargetSlot++) {
+                            if (beltItemHandler.getStackInSlot(beltTargetSlot).isEmpty()) {
+                                // Transfer the item to the target belt slot
+                                ItemStack itemToTransfer = itemHandler.getStackInSlot(i).copy();
+                                beltItemHandler.setStackInSlot(beltTargetSlot, itemToTransfer);
+                                itemHandler.setStackInSlot(i, ItemStack.EMPTY);
+
+                                // Stop after transferring one item
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        } else if (targetBlock instanceof ExpressBelts) {
+            BlockEntity targetBlockEntity = level.getBlockEntity(targetPos);
+            if (targetBlockEntity instanceof ExpressBeltsBlockEntity) {
+                ExpressBeltsBlockEntity targetBeltsEntity = (ExpressBeltsBlockEntity) targetBlockEntity;
                 ItemStackHandler beltItemHandler = targetBeltsEntity.itemHandler;
 
                 // Loop over each slot in the current belt

@@ -28,7 +28,7 @@ import org.minetrio1256.craftdustry.block.custom.belts.ExpressBelts;
 import org.minetrio1256.craftdustry.block.custom.belts.FastBelts;
 import org.minetrio1256.craftdustry.block.entity.modBlockEntities;
 
-public class FastBeltsBlockEntity extends BlockEntity implements MenuProvider {
+public class ExpressBeltsBlockEntity extends BlockEntity implements MenuProvider {
     public final ItemStackHandler itemHandler = new ItemStackHandler(8) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -74,8 +74,8 @@ public class FastBeltsBlockEntity extends BlockEntity implements MenuProvider {
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
 
-    public FastBeltsBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(modBlockEntities.FAST_BELTS_BE.get(), pPos, pBlockState);
+    public ExpressBeltsBlockEntity(BlockPos pPos, BlockState pBlockState) {
+        super(modBlockEntities.EXPRESS_BELTS_BE.get(), pPos, pBlockState);
     }
 
     @Override
@@ -172,7 +172,7 @@ public class FastBeltsBlockEntity extends BlockEntity implements MenuProvider {
         // Get the block at the target position
         Block targetBlock = level.getBlockState(targetPos).getBlock();
 
-        int maxLoop = 2;
+        int maxLoop = 3;
 
         // Check if the target block is a belt
         if (targetBlock instanceof Belts){
