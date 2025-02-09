@@ -16,6 +16,7 @@ import org.minetrio1256.craftdustry.block.entity.modBlockEntities;
 import org.minetrio1256.craftdustry.block.modBlocks;
 import org.minetrio1256.craftdustry.item.modItems;
 import org.slf4j.Logger;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(Main.MOD_ID)

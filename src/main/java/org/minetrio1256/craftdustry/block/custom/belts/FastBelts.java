@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -23,8 +22,6 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import org.jetbrains.annotations.Nullable;
 
-
-import org.minetrio1256.craftdustry.block.entity.custom.belts.BeltsBlockEntity;
 import org.minetrio1256.craftdustry.block.entity.custom.belts.FastBeltsBlockEntity;
 import org.minetrio1256.craftdustry.block.entity.modBlockEntities;
 
@@ -42,10 +39,14 @@ public class FastBelts extends BaseEntityBlock {
     }
 
     @Override
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return SHAPE;  // Return your defined shape or a custom shape
+    }
+
+    @Override
     protected VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return SHAPE;
     }
-
 
     @Override
     protected RenderShape getRenderShape(BlockState pState) {

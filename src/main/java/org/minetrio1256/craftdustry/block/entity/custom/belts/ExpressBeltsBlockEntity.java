@@ -4,31 +4,23 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.minetrio1256.craftdustry.api.item.IItemTransfer;
 import org.minetrio1256.craftdustry.block.custom.belts.Belts;
 import org.minetrio1256.craftdustry.block.custom.belts.ExpressBelts;
 import org.minetrio1256.craftdustry.block.custom.belts.FastBelts;
 import org.minetrio1256.craftdustry.block.entity.modBlockEntities;
 
-public class ExpressBeltsBlockEntity extends BlockEntity implements MenuProvider {
+public class ExpressBeltsBlockEntity extends BlockEntity implements IItemTransfer {
     public final ItemStackHandler itemHandler = new ItemStackHandler(8) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -79,27 +71,6 @@ public class ExpressBeltsBlockEntity extends BlockEntity implements MenuProvider
     }
 
     @Override
-    public Component getDisplayName() {
-        return null;
-    }
-
-    @Nullable
-    @Override
-    public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
-        return null;
-    }
-    @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if(cap == ForgeCapabilities.ITEM_HANDLER) {
-            if(side == null) {
-                return lazyItemHandler.cast();
-            }
-        }
-
-        return super.getCapability(cap, side);
-    }
-
-    @Override
     public void onLoad() {
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
@@ -133,123 +104,85 @@ public class ExpressBeltsBlockEntity extends BlockEntity implements MenuProvider
 
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
-    public void tick(Level level, BlockPos pPos, BlockState pState) {
-        // Get the facing direction from the block state
-        Direction facing = pState.getValue(Belts.FACING); // Replace with your block's facing property
 
-        // Define direction offsets based on the facing direction
-        int xOffset = 0, yOffset = 0, zOffset = 0;
+    public void tick(Level level, BlockPos pos, BlockState state) {
+        if (level.isClientSide()) return;
 
-        // Calculate offsets based on the facing direction
-        switch (facing) {
-            case NORTH:
-                zOffset = -1;
-                break;
-            case SOUTH:
-                zOffset = 1;
-                break;
-            case EAST:
-                xOffset = 1;
-                break;
-            case WEST:
-                xOffset = -1;
-                break;
-            case UP:
-                yOffset = 1;
-                break;
-            case DOWN:
-                yOffset = -1;
-                break;
-            default:
-                // Handle unexpected facing direction
-                System.out.println("Invalid facing direction");
-                return;
+        // Move items forward in the belt itemHandler
+        for (int i = itemHandler.getSlots() - 1; i > 0; i--) {
+            ItemStack current = itemHandler.getStackInSlot(i);
+            ItemStack previous = itemHandler.getStackInSlot(i - 1);
+
+            if (current.isEmpty() && !previous.isEmpty()) {
+                itemHandler.setStackInSlot(i, previous.copy()); // Move item forward
+                itemHandler.setStackInSlot(i - 1, ItemStack.EMPTY); // Clear previous slot
+            }
         }
 
-        BlockPos currentPos = getBlockPos();
-        BlockPos targetPos = currentPos.offset(xOffset, yOffset, zOffset);
+        // Handle last slot (drop item if necessary)
+        ItemStack lastItem = itemHandler.getStackInSlot(itemHandler.getSlots() - 1);
+        if (!lastItem.isEmpty()) {
+            BlockPos frontPos = pos.relative(state.getValue(Belts.FACING)); // Get front position
+            BlockEntity frontBlockEntity = level.getBlockEntity(frontPos);
 
-        // Get the block at the target position
-        Block targetBlock = level.getBlockState(targetPos).getBlock();
-
-        int maxLoop = 3;
-
-        // Check if the target block is a belt
-        if (targetBlock instanceof Belts){
-            BlockEntity targetBlockEntity = level.getBlockEntity(targetPos);
-            if (targetBlockEntity instanceof BeltsBlockEntity) {
-                BeltsBlockEntity targetBeltsEntity = (BeltsBlockEntity) targetBlockEntity;
-                ItemStackHandler beltItemHandler = targetBeltsEntity.itemHandler;
-                for (int currentloop = 0; currentloop < maxLoop; currentloop++){
-                    // Loop over each slot in the current belt
-                    for (int i = 0; i < itemHandler.getSlots(); i++) {
-                        if (!itemHandler.getStackInSlot(i).isEmpty()) {
-                            // Find the first empty slot in the target belt
-                            for (int beltTargetSlot = 0; beltTargetSlot < beltItemHandler.getSlots(); beltTargetSlot++) {
-                                if (beltItemHandler.getStackInSlot(beltTargetSlot).isEmpty()) {
-                                    // Transfer the item to the target belt slot
-                                    ItemStack itemToTransfer = itemHandler.getStackInSlot(i).copy();
-                                    beltItemHandler.setStackInSlot(beltTargetSlot, itemToTransfer);
-                                    itemHandler.setStackInSlot(i, ItemStack.EMPTY);
-
-                                    // Stop after transferring one item
-                                    return;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        } else if (targetBlock instanceof FastBelts) {
-            BlockEntity targetBlockEntity = level.getBlockEntity(targetPos);
-            if (targetBlockEntity instanceof FastBeltsBlockEntity) {
-                FastBeltsBlockEntity targetBeltsEntity = (FastBeltsBlockEntity) targetBlockEntity;
-                ItemStackHandler beltItemHandler = targetBeltsEntity.itemHandler;
-                for (int currentloop = 0; currentloop < maxLoop; currentloop++){
-                    // Loop over each slot in the current belt
-                    for (int i = 0; i < itemHandler.getSlots(); i++) {
-                        if (!itemHandler.getStackInSlot(i).isEmpty()) {
-                            // Find the first empty slot in the target belt
-                            for (int beltTargetSlot = 0; beltTargetSlot < beltItemHandler.getSlots(); beltTargetSlot++) {
-                                if (beltItemHandler.getStackInSlot(beltTargetSlot).isEmpty()) {
-                                    // Transfer the item to the target belt slot
-                                    ItemStack itemToTransfer = itemHandler.getStackInSlot(i).copy();
-                                    beltItemHandler.setStackInSlot(beltTargetSlot, itemToTransfer);
-                                    itemHandler.setStackInSlot(i, ItemStack.EMPTY);
-
-                                    // Stop after transferring one item
-                                    return;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        } else if (targetBlock instanceof ExpressBelts) {
-            BlockEntity targetBlockEntity = level.getBlockEntity(targetPos);
-            if (targetBlockEntity instanceof ExpressBeltsBlockEntity) {
-                ExpressBeltsBlockEntity targetBeltsEntity = (ExpressBeltsBlockEntity) targetBlockEntity;
-                ItemStackHandler beltItemHandler = targetBeltsEntity.itemHandler;
-                for (int currentloop = 0; currentloop < maxLoop; currentloop++){
-                    // Loop over each slot in the current belt
-                    for (int i = 0; i < itemHandler.getSlots(); i++) {
-                        if (!itemHandler.getStackInSlot(i).isEmpty()) {
-                            // Find the first empty slot in the target belt
-                            for (int beltTargetSlot = 0; beltTargetSlot < beltItemHandler.getSlots(); beltTargetSlot++) {
-                                if (beltItemHandler.getStackInSlot(beltTargetSlot).isEmpty()) {
-                                    // Transfer the item to the target belt slot
-                                    ItemStack itemToTransfer = itemHandler.getStackInSlot(i).copy();
-                                    beltItemHandler.setStackInSlot(beltTargetSlot, itemToTransfer);
-                                    itemHandler.setStackInSlot(i, ItemStack.EMPTY);
-
-                                    // Stop after transferring one item
-                                    return;
-                                }
-                            }
-                        }
-                    }
+            if (frontBlockEntity instanceof IItemTransfer transfer && transfer.canInsert(lastItem)) {
+                if (transfer.insertItem(lastItem)) {
+                    itemHandler.setStackInSlot(itemHandler.getSlots() - 1, ItemStack.EMPTY); // Remove from belt
                 }
             }
         }
+    }
+
+    @Override
+    public boolean canInsert(ItemStack stack) {
+        // Check if any slot in the itemHandler is empty
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            if (itemHandler.getStackInSlot(i).isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean insertItem(ItemStack stack) {
+        if (!canInsert(stack)) return false;
+
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            if (itemHandler.getStackInSlot(i).isEmpty()) {
+                itemHandler.setStackInSlot(i, stack.copy());
+                stack.setCount(0); // Mark the stack as used up
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canExtract(ItemStack stack) {
+        // Allow extraction if any slot contains an item
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            if (!itemHandler.getStackInSlot(i).isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public ItemStack extractItem() {
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            ItemStack stack = itemHandler.getStackInSlot(i);
+            if (!stack.isEmpty()) {
+                itemHandler.setStackInSlot(i, ItemStack.EMPTY);
+                return stack;
+            }
+        }
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    public boolean isValid() {
+        return false;
     }
 }

@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -27,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import org.minetrio1256.craftdustry.block.entity.custom.belts.BeltsBlockEntity;
 import org.minetrio1256.craftdustry.block.entity.modBlockEntities;
 
+
 import java.util.function.Function;
 
 public class Belts extends BaseEntityBlock {
@@ -38,6 +38,11 @@ public class Belts extends BaseEntityBlock {
 
     public Belts(Properties pProperties) {
         super(pProperties);
+    }
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return SHAPE;  // Return your defined shape or a custom shape
     }
 
     @Override
@@ -112,7 +117,7 @@ public class Belts extends BaseEntityBlock {
                     if (itemHandler.getStackInSlot(i).isEmpty()) {
                         itemHandler.setStackInSlot(i, itemStack.copy()); // Insert the item stack into the belt
                         itemEntity.discard(); // Remove the item entity from the world
-                        break; // Exit the loop after inserting the item
+                        return; // Exit the loop after inserting the item
                     }
                 }
             }

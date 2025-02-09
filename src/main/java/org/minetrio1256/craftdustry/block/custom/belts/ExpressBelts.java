@@ -21,7 +21,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 import org.minetrio1256.craftdustry.block.entity.custom.belts.ExpressBeltsBlockEntity;
-import org.minetrio1256.craftdustry.block.entity.custom.belts.FastBeltsBlockEntity;
 import org.minetrio1256.craftdustry.block.entity.modBlockEntities;
 
 import java.util.function.Function;
@@ -35,6 +34,11 @@ public class ExpressBelts extends BaseEntityBlock {
 
     public ExpressBelts(Properties pProperties) {
         super(pProperties);
+    }
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return SHAPE;  // Return your defined shape or a custom shape
     }
 
     @Override
