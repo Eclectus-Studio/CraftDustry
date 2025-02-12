@@ -9,14 +9,15 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.minetrio1256.craftdustry.Main;
+import org.minetrio1256.craftdustry.screen.chests.wooden_chest.WoodenChestMenu;
 
 
 public class ModMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENUS =
             DeferredRegister.create(ForgeRegistries.MENU_TYPES, Main.MOD_ID);
 
-    //public static final RegistryObject<MenuType<beltsMenu>> BELTS_MENU =
-      //      registerMenuType("belts_menu", beltsMenu::new);
+    public static final RegistryObject<MenuType<WoodenChestMenu>> WOODEN_CHEST_MENU =
+            registerMenuType("wooden_chest_menu", WoodenChestMenu::new);
 
     private static <T extends AbstractContainerMenu>RegistryObject<MenuType<T>> registerMenuType(String name,
                                                                                                  IContainerFactory<T> factory) {

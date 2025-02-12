@@ -2,6 +2,7 @@ package org.minetrio1256.craftdustry;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -15,8 +16,9 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.minetrio1256.craftdustry.block.entity.modBlockEntities;
 import org.minetrio1256.craftdustry.block.modBlocks;
 import org.minetrio1256.craftdustry.item.modItems;
+import org.minetrio1256.craftdustry.screen.ModMenuTypes;
+import org.minetrio1256.craftdustry.screen.chests.wooden_chest.WoodenChestScreen;
 import org.slf4j.Logger;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(Main.MOD_ID)
@@ -34,7 +36,6 @@ public class Main {
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
-
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
 
@@ -42,6 +43,7 @@ public class Main {
         modBlocks.register(modEventBus);
         modBlockEntities.register(modEventBus);
         modItems.register(modEventBus);
+        ModMenuTypes.register(modEventBus);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -65,6 +67,7 @@ public class Main {
             // Some client setup code
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+            MenuScreens.register(ModMenuTypes.WOODEN_CHEST_MENU.get(), WoodenChestScreen::new);
         }
     }
 }

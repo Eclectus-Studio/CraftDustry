@@ -10,15 +10,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-import org.minetrio1256.craftdustry.api.item.IItemTransfer;
 import org.minetrio1256.craftdustry.block.custom.belts.Belts;
 import org.minetrio1256.craftdustry.block.entity.modBlockEntities;
 
-public class BeltsBlockEntity extends BlockEntity implements IItemTransfer {
+public class BeltsBlockEntity extends BlockEntity {
     public final ItemStackHandler itemHandler = new ItemStackHandler(8) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -105,81 +106,40 @@ public class BeltsBlockEntity extends BlockEntity implements IItemTransfer {
     public void tick(Level level, BlockPos pos, BlockState state) {
         if (level.isClientSide()) return;
 
-        // Move items forward in the belt itemHandler
         for (int i = itemHandler.getSlots() - 1; i > 0; i--) {
             ItemStack current = itemHandler.getStackInSlot(i);
             ItemStack previous = itemHandler.getStackInSlot(i - 1);
 
             if (current.isEmpty() && !previous.isEmpty()) {
-                itemHandler.setStackInSlot(i, previous.copy()); // Move item forward
-                itemHandler.setStackInSlot(i - 1, ItemStack.EMPTY); // Clear previous slot
+                itemHandler.setStackInSlot(i, previous.copy());
+                itemHandler.setStackInSlot(i - 1, ItemStack.EMPTY);
             }
         }
 
-        // Handle last slot (drop item if necessary)
         ItemStack lastItem = itemHandler.getStackInSlot(itemHandler.getSlots() - 1);
         if (!lastItem.isEmpty()) {
-            BlockPos frontPos = pos.relative(state.getValue(Belts.FACING)); // Get front position
+            BlockPos frontPos = pos.relative(state.getValue(Belts.FACING));
             BlockEntity frontBlockEntity = level.getBlockEntity(frontPos);
 
-            if (frontBlockEntity instanceof IItemTransfer transfer && transfer.canInsert(lastItem)) {
-                if (transfer.insertItem(lastItem)) {
-                    itemHandler.setStackInSlot(itemHandler.getSlots() - 1, ItemStack.EMPTY); // Remove from belt
-                }
+            if (frontBlockEntity != null) {
+                frontBlockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
+                    for (int i = 0; i < handler.getSlots(); i++) {
+                        if (handler.insertItem(i, lastItem, true).isEmpty()) {
+                            handler.insertItem(i, lastItem.copy(), false);
+                            itemHandler.setStackInSlot(itemHandler.getSlots() - 1, ItemStack.EMPTY);
+                            break;
+                        }
+                    }
+                });
             }
         }
     }
 
     @Override
-    public boolean canInsert(ItemStack stack) {
-        // Check if any slot in the itemHandler is empty
-        for (int i = 0; i < itemHandler.getSlots(); i++) {
-            if (itemHandler.getStackInSlot(i).isEmpty()) {
-                return true;
-            }
+    public <T> LazyOptional<T> getCapability(Capability<T> capability) {
+        if (capability == ForgeCapabilities.ITEM_HANDLER) {
+            return lazyItemHandler.cast();
         }
-        return false;
-    }
-
-    @Override
-    public boolean insertItem(ItemStack stack) {
-        if (!canInsert(stack)) return false;
-
-        for (int i = 0; i < itemHandler.getSlots(); i++) {
-            if (itemHandler.getStackInSlot(i).isEmpty()) {
-                itemHandler.setStackInSlot(i, stack.copy());
-                stack.setCount(0); // Mark the stack as used up
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean canExtract(ItemStack stack) {
-        // Allow extraction if any slot contains an item
-        for (int i = 0; i < itemHandler.getSlots(); i++) {
-            if (!itemHandler.getStackInSlot(i).isEmpty()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public ItemStack extractItem() {
-        for (int i = 0; i < itemHandler.getSlots(); i++) {
-            ItemStack stack = itemHandler.getStackInSlot(i);
-            if (!stack.isEmpty()) {
-                itemHandler.setStackInSlot(i, ItemStack.EMPTY);
-                return stack;
-            }
-        }
-        return ItemStack.EMPTY;
-    }
-
-    @Override
-    public boolean isValid() {
-        return false;
+        return super.getCapability(capability);
     }
 }
