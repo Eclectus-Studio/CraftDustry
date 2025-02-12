@@ -136,4 +136,20 @@ public class Belts extends BaseEntityBlock {
 
         super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
     }
+    @Override
+    public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
+        if (pEntity instanceof ItemEntity itemEntity) {
+            if (pLevel.getBlockEntity(pPos) instanceof BeltsBlockEntity beltsBlockEntity) {
+                ItemStackHandler itemHandler = beltsBlockEntity.itemHandler;
+
+                for (int i = 0; i < itemHandler.getSlots(); i++) {
+                    if (itemHandler.getStackInSlot(i).isEmpty()) {
+                        itemHandler.setStackInSlot(i, itemEntity.getItem().copy());
+                        itemEntity.discard();
+                        return;
+                    }
+                }
+            }
+        }
+    }
 }

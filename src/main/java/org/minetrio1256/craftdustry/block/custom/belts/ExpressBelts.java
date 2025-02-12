@@ -20,6 +20,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
+import org.minetrio1256.craftdustry.block.entity.custom.belts.BeltsBlockEntity;
 import org.minetrio1256.craftdustry.block.entity.custom.belts.ExpressBeltsBlockEntity;
 import org.minetrio1256.craftdustry.block.entity.modBlockEntities;
 
@@ -132,5 +133,21 @@ public class ExpressBelts extends BaseEntityBlock {
         }
 
         super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+    }
+    @Override
+    public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
+        if (pEntity instanceof ItemEntity itemEntity) {
+            if (pLevel.getBlockEntity(pPos) instanceof BeltsBlockEntity beltsBlockEntity) {
+                ItemStackHandler itemHandler = beltsBlockEntity.itemHandler;
+
+                for (int i = 0; i < itemHandler.getSlots(); i++) {
+                    if (itemHandler.getStackInSlot(i).isEmpty()) {
+                        itemHandler.setStackInSlot(i, itemEntity.getItem().copy());
+                        itemEntity.discard();
+                        return;
+                    }
+                }
+            }
+        }
     }
 }
