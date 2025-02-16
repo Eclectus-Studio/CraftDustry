@@ -9,6 +9,7 @@ import org.minetrio1256.craftdustry.Main;
 import org.minetrio1256.craftdustry.block.entity.custom.belts.BeltsBlockEntity;
 import org.minetrio1256.craftdustry.block.entity.custom.belts.ExpressBeltsBlockEntity;
 import org.minetrio1256.craftdustry.block.entity.custom.belts.FastBeltsBlockEntity;
+import org.minetrio1256.craftdustry.block.entity.custom.chests.IronChestBlockEntity;
 import org.minetrio1256.craftdustry.block.entity.custom.chests.WoodenChestBE;
 import org.minetrio1256.craftdustry.block.modBlocks;
 
@@ -29,6 +30,9 @@ public class modBlockEntities {
     public static final RegistryObject<BlockEntityType<WoodenChestBE>> WOODEN_CHEST_BE =
             BLOCK_ENTITIES.register("wooden_chest", () -> BlockEntityType.Builder.of(
                     (pos, state) -> new WoodenChestBE(pos, state), modBlocks.WOODEN_CHEST.get()).build(null));
+    public static final RegistryObject<BlockEntityType<IronChestBlockEntity>> IRON_CHEST_BE =
+            BLOCK_ENTITIES.register("iron_chest", () -> BlockEntityType.Builder.of(
+                    (pos, state) -> new IronChestBlockEntity(pos, state), modBlocks.IRON_CHEST.get()).build(null));
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
     }

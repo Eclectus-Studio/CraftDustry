@@ -9,6 +9,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.minetrio1256.craftdustry.Main;
+import org.minetrio1256.craftdustry.screen.chests.iron_chest.IronChestMenu;
 import org.minetrio1256.craftdustry.screen.chests.wooden_chest.WoodenChestMenu;
 
 
@@ -18,6 +19,8 @@ public class ModMenuTypes {
 
     public static final RegistryObject<MenuType<WoodenChestMenu>> WOODEN_CHEST_MENU =
             registerMenuType("wooden_chest_menu", WoodenChestMenu::new);
+    public static final RegistryObject<MenuType<IronChestMenu>> IRON_CHEST_MENU =
+            registerMenuType("iron_chest_menu", IronChestMenu::new);
 
     private static <T extends AbstractContainerMenu>RegistryObject<MenuType<T>> registerMenuType(String name,
                                                                                                  IContainerFactory<T> factory) {

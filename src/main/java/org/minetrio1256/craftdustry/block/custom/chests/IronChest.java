@@ -4,8 +4,6 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
@@ -15,19 +13,18 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.items.IItemHandler;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.minetrio1256.craftdustry.block.entity.custom.chests.WoodenChestBE;
+import org.minetrio1256.craftdustry.block.entity.custom.chests.IronChestBlockEntity;
 
 import java.util.function.Function;
 
-public class WoodenChest extends BaseEntityBlock {
-    public static final MapCodec<WoodenChest> CODEC = simpleCodec((Function<Properties, WoodenChest>) WoodenChest::new);
+public class IronChest extends BaseEntityBlock {
+    public static final MapCodec<IronChest> CODEC = simpleCodec((Function<BlockBehaviour.Properties, IronChest>) IronChest::new);
 
-    public WoodenChest(Properties pProperties) {
+    public IronChest(BlockBehaviour.Properties pProperties) {
         super(pProperties);
     }
 
@@ -39,7 +36,7 @@ public class WoodenChest extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new WoodenChestBE(blockPos, blockState);
+        return new IronChestBlockEntity(blockPos, blockState);
     }
 
     @Override
@@ -51,8 +48,8 @@ public class WoodenChest extends BaseEntityBlock {
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
         if (pState.getBlock() != pNewState.getBlock()) {
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-            if (blockEntity instanceof WoodenChestBE woodenChestBe) {
-                woodenChestBe.drops();
+            if (blockEntity instanceof IronChestBlockEntity ironChestBlockEntity) {
+                ironChestBlockEntity.drops();
             }
         }
 
@@ -62,9 +59,9 @@ public class WoodenChest extends BaseEntityBlock {
     @Override
     protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos,
                                               Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
-        if (pLevel.getBlockEntity(pPos) instanceof WoodenChestBE woodenChestBE) {
+        if (pLevel.getBlockEntity(pPos) instanceof IronChestBlockEntity ironChestBlockEntity) {
             if (pPlayer instanceof ServerPlayer serverPlayer) { // Check before casting
-                serverPlayer.openMenu(new SimpleMenuProvider(woodenChestBE, Component.translatable("name.craftdustry.wooden_chest")), pPos);
+                serverPlayer.openMenu(new SimpleMenuProvider(ironChestBlockEntity, Component.translatable("name.craftdustry.wooden_chest")), pPos);
             }
             return ItemInteractionResult.SUCCESS;
         }

@@ -17,6 +17,7 @@ import org.minetrio1256.craftdustry.block.entity.modBlockEntities;
 import org.minetrio1256.craftdustry.block.modBlocks;
 import org.minetrio1256.craftdustry.item.modItems;
 import org.minetrio1256.craftdustry.screen.ModMenuTypes;
+import org.minetrio1256.craftdustry.screen.chests.iron_chest.IronChestScreen;
 import org.minetrio1256.craftdustry.screen.chests.wooden_chest.WoodenChestScreen;
 import org.slf4j.Logger;
 
@@ -67,6 +68,7 @@ public class Main {
             // Some client setup code
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+            MenuScreens.register(ModMenuTypes.IRON_CHEST_MENU.get(), IronChestScreen::new);
             MenuScreens.register(ModMenuTypes.WOODEN_CHEST_MENU.get(), WoodenChestScreen::new);
         }
     }

@@ -15,6 +15,7 @@ import org.minetrio1256.craftdustry.Main;
 import org.minetrio1256.craftdustry.block.custom.belts.Belts;
 import org.minetrio1256.craftdustry.block.custom.belts.ExpressBelts;
 import org.minetrio1256.craftdustry.block.custom.belts.FastBelts;
+import org.minetrio1256.craftdustry.block.custom.chests.IronChest;
 import org.minetrio1256.craftdustry.block.custom.chests.WoodenChest;
 import org.minetrio1256.craftdustry.item.modItems;
 
@@ -30,6 +31,8 @@ public class modBlocks {
             () -> new ExpressBelts(BlockBehaviour.Properties.of().strength(2f).requiresCorrectToolForDrops().randomTicks()));
     public static final RegistryObject<Block> WOODEN_CHEST = registerBlock("wooden_chest",
             () -> new WoodenChest(BlockBehaviour.Properties.of().strength(2f).requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> IRON_CHEST = registerBlock("iron_chest",
+            () -> new IronChest(BlockBehaviour.Properties.of().strength(2f).requiresCorrectToolForDrops()));
 
 
     private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block) {
