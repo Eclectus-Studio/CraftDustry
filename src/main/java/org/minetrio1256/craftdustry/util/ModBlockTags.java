@@ -1,4 +1,4 @@
 package org.minetrio1256.craftdustry.util;
 
-public class modTags {
+public class ModBlockTags {
 }
