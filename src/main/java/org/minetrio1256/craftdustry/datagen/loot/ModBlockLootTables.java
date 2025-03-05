@@ -19,24 +19,24 @@ import org.minetrio1256.craftdustry.block.modBlocks;
 import java.util.Set;
 
 public class ModBlockLootTables extends BlockLootSubProvider {
-    public ModBlockLootTables(HolderLookup.Provider provider) {
+    public ModBlockLootTables(final HolderLookup.Provider provider) {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags(), provider);
     }
 
     @Override
     protected void generate() {
-        //dropSelf(ModBlocks.AZURITE_BLOCK.get());
-        //dropSelf(ModBlocks.MAGIC_BLOCK.get());
-
-        //this.add(ModBlocks.AZURITE_ORE.get(),
-                //block -> createOreDrop(ModBlocks.AZURITE_ORE.get(), ModItems.RAW_AZURITE.get()));
-
+        this.dropSelf(modBlocks.BELTS.get());
+        this.dropSelf(modBlocks.EXPRESS_BELTS.get());
+        this.dropSelf(modBlocks.FAST_BELTS.get());
+        this.dropSelf(modBlocks.IRON_CHEST.get());
+        this.dropSelf(modBlocks.WOODEN_CHEST.get());
+        this.dropSelf(modBlocks.TURBO_BELTS.get());
     }
 
-    protected LootTable.Builder createMultipleOreDrops(Block pBlock, Item item, float minDrops, float maxDrops) {
-        HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
-        return this.createSilkTouchDispatchTable(pBlock,
-                this.applyExplosionDecay(pBlock, LootItem.lootTableItem(item)
+    protected LootTable.Builder createMultipleOreDrops(final Block pBlock, final Item item, final float minDrops, final float maxDrops) {
+        final HolderLookup.RegistryLookup<Enchantment> registrylookup = registries.lookupOrThrow(Registries.ENCHANTMENT);
+        return createSilkTouchDispatchTable(pBlock,
+                applyExplosionDecay(pBlock, LootItem.lootTableItem(item)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(minDrops, maxDrops)))
                         .apply(ApplyBonusCount.addOreBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE)))));
     }

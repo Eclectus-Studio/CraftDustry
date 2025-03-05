@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -31,38 +32,38 @@ import java.util.function.Function;
 
 public class Belts extends BaseEntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-    public static final MapCodec<Belts> CODEC = simpleCodec((Function<Properties, Belts>) Belts::new);
-    public static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 2, 16);
+    public static final MapCodec<Belts> CODEC = BlockBehaviour.simpleCodec(Belts::new);
+    public static final VoxelShape SHAPE = box(0, 0, 0, 16, 2, 16);
 
     // Removed the speed field here
 
-    public Belts(Properties pProperties) {
+    public Belts(final Properties pProperties) {
         super(pProperties);
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return SHAPE;  // Return your defined shape or a custom shape
+    public VoxelShape getCollisionShape(final BlockState state, final BlockGetter level, final BlockPos pos, final CollisionContext context) {
+        return Belts.SHAPE;  // Return your defined shape or a custom shape
     }
 
     @Override
-    protected VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        return SHAPE;
+    protected VoxelShape getShape(final BlockState pState, final BlockGetter pLevel, final BlockPos pPos, final CollisionContext pContext) {
+        return Belts.SHAPE;
     }
 
     @Override
-    protected RenderShape getRenderShape(BlockState pState) {
+    protected RenderShape getRenderShape(final BlockState pState) {
         return RenderShape.MODEL;
     }
 
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
+        return Belts.CODEC;
     }
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+    public BlockEntity newBlockEntity(final BlockPos blockPos, final BlockState blockState) {
         // Hardcoded speed value of 15
         return new BeltsBlockEntity(blockPos, blockState);
     }
@@ -70,47 +71,47 @@ public class Belts extends BaseEntityBlock {
     /* FACING */
 
     @Override
-    protected BlockState rotate(BlockState pState, Rotation pRotation) {
-        return pState.setValue(FACING, pRotation.rotate(pState.getValue(FACING)));
+    protected BlockState rotate(final BlockState pState, final Rotation pRotation) {
+        return pState.setValue(Belts.FACING, pRotation.rotate(pState.getValue(Belts.FACING)));
     }
 
     @Override
-    protected BlockState mirror(BlockState pState, Mirror pMirror) {
-        return pState.rotate(pMirror.getRotation(pState.getValue(FACING)));
-    }
-
-    @Nullable
-    @Override
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite());
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(FACING);
+    protected BlockState mirror(final BlockState pState, final Mirror pMirror) {
+        return pState.rotate(pMirror.getRotation(pState.getValue(Belts.FACING)));
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+    public BlockState getStateForPlacement(final BlockPlaceContext pContext) {
+        return defaultBlockState().setValue(Belts.FACING, pContext.getHorizontalDirection().getOpposite());
+    }
+
+    @Override
+    protected void createBlockStateDefinition(final StateDefinition.Builder<Block, BlockState> pBuilder) {
+        pBuilder.add(Belts.FACING);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(final Level pLevel, final BlockState pState, final BlockEntityType<T> pBlockEntityType) {
         if (pLevel.isClientSide()) {
             return null;
         }
 
-        return createTickerHelper(pBlockEntityType, modBlockEntities.BELTS_BE.get(),
+        return BaseEntityBlock.createTickerHelper(pBlockEntityType, modBlockEntities.BELTS_BE.get(),
                 (level, blockPos, blockState, beltsBlockEntity) -> beltsBlockEntity.tick(level, blockPos, blockState));
     }
 
     @Override
-    public void stepOn(Level pLevel, BlockPos pPos, BlockState pState, Entity pEntity) {
-        if (pEntity instanceof ItemEntity itemEntity) {
+    public void stepOn(final Level pLevel, final BlockPos pPos, final BlockState pState, final Entity pEntity) {
+        if (pEntity instanceof final ItemEntity itemEntity) {
             // Get the item stack from the entity
-            ItemStack itemStack = itemEntity.getItem();
+            final ItemStack itemStack = itemEntity.getItem();
 
             // Get the block entity at the current position
-            if (pLevel.getBlockEntity(pPos) instanceof BeltsBlockEntity beltsBlockEntity) {
+            if (pLevel.getBlockEntity(pPos) instanceof final BeltsBlockEntity beltsBlockEntity) {
                 // Get the belt's item handler
-                ItemStackHandler itemHandler = beltsBlockEntity.itemHandler;
+                final ItemStackHandler itemHandler = beltsBlockEntity.itemHandler;
 
                 // Try to insert the item stack into the belt
                 for (int i = 0; i < itemHandler.getSlots(); i++) {
@@ -126,10 +127,10 @@ public class Belts extends BaseEntityBlock {
         super.stepOn(pLevel, pPos, pState, pEntity);
     }
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
+    public void onRemove(final BlockState pState, final Level pLevel, final BlockPos pPos, final BlockState pNewState, final boolean pIsMoving) {
         if (pState.getBlock() != pNewState.getBlock()) {
-            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-            if (blockEntity instanceof BeltsBlockEntity beltsBlockEntity) {
+            final BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
+            if (blockEntity instanceof final BeltsBlockEntity beltsBlockEntity) {
                 beltsBlockEntity.drops();
             }
         }
@@ -137,10 +138,10 @@ public class Belts extends BaseEntityBlock {
         super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
     }
     @Override
-    public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
-        if (pEntity instanceof ItemEntity itemEntity) {
-            if (pLevel.getBlockEntity(pPos) instanceof BeltsBlockEntity beltsBlockEntity) {
-                ItemStackHandler itemHandler = beltsBlockEntity.itemHandler;
+    public void entityInside(final BlockState pState, final Level pLevel, final BlockPos pPos, final Entity pEntity) {
+        if (pEntity instanceof final ItemEntity itemEntity) {
+            if (pLevel.getBlockEntity(pPos) instanceof final BeltsBlockEntity beltsBlockEntity) {
+                final ItemStackHandler itemHandler = beltsBlockEntity.itemHandler;
 
                 for (int i = 0; i < itemHandler.getSlots(); i++) {
                     if (itemHandler.getStackInSlot(i).isEmpty()) {

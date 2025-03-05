@@ -7,7 +7,7 @@ import org.minetrio1256.craftdustry.Main;
 
 
 public class ModItemModelProvider extends ItemModelProvider {
-    public ModItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
+    public ModItemModelProvider(final PackOutput output, final ExistingFileHelper existingFileHelper) {
         super(output, Main.MOD_ID, existingFileHelper);
     }
 

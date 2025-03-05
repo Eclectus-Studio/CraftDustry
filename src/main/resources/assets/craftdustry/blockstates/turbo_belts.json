@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "craftdustry:block/express_belts"
+    },
+    "facing=south": {
+      "model": "craftdustry:block/express_belts",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "craftdustry:block/express_belts",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "craftdustry:block/express_belts",
+      "y": 90
+    }
+  }
+}

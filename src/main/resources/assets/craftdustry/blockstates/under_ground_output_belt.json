@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "craftdustry:block/under_ground_output_belt"
+    },
+    "facing=south": {
+      "model": "craftdustry:block/under_ground_output_belt",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "craftdustry:block/under_ground_output_belt",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "craftdustry:block/under_ground_output_belt",
+      "y": 90
+    }
+  }
+}

@@ -1,0 +1,31 @@
+[23févr.2025 13:57:31.572] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forge_userdev_data, --assetIndex, 17, --assetsDir, /Users/paul/.gradle/caches/forge_gradle/assets, --gameDir, ., --mod, craftdustry, --all, --output, /Users/paul/IdeaProjects/CraftDustry/src/generated/resources, --existing, /Users/paul/IdeaProjects/CraftDustry/src/main/resources, --mixin.config, craftdustry.mixins.json]
+[23févr.2025 13:57:31.583] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: JVM identified as Oracle Corporation Java HotSpot(TM) 64-Bit Server VM 21.0.1+12-LTS-29
+[23févr.2025 13:57:31.585] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 10.2.2 starting: java version 21.0.1 by Oracle Corporation; OS Mac OS X arch x86_64 version 13.7.4
+[23févr.2025 13:57:32.124] [main/INFO] [net.minecraftforge.fml.loading.ImmediateWindowHandler/]: ImmediateWindowProvider not loading because launch target is forge_userdev_data
+[23févr.2025 13:57:33.095] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=jar:file:///Users/paul/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.7/8ab114ac385e6dbdad5efafe28aba4df8120915f/mixin-0.8.7.jar!/ Service=ModLauncher Env=UNKNOWN
+[23févr.2025 13:57:37.983] [main/INFO] [net.minecraftforge.fml.loading.moddiscovery.JarInJarDependencyLocator/]: No dependencies to load found. Skipping!
+[23févr.2025 13:57:41.315] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forge_userdev_data' with arguments [--gameDir, ., --assetsDir, /Users/paul/.gradle/caches/forge_gradle/assets, --assetIndex, 17, --mod, craftdustry, --all, --output, /Users/paul/IdeaProjects/CraftDustry/src/generated/resources, --existing, /Users/paul/IdeaProjects/CraftDustry/src/main/resources]
+[23févr.2025 13:57:41.642] [main/WARN] [mixin/]: Reference map 'craftdustry.refmap.json' for craftdustry.mixins.json could not be read. If this is a development environment you can ignore this message
+[23févr.2025 13:57:41.657] [main/WARN] [mixin/]: Mixin environment was unable to detect the current side, sided mixins will not be applied
+[23févr.2025 13:57:57.840] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Forge mod loading, version 52.0.38, for MC 1.21.1 with MCP 20240808.132146
+[23févr.2025 13:57:57.874] [modloading-worker-0/INFO] [net.minecraftforge.common.MinecraftForge/FORGE]: MinecraftForge v52.0.38 Initialized
+[23févr.2025 13:57:58.241] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Opening jdk.naming.dns/com.sun.jndi.dns to java.naming
+[23févr.2025 13:57:59.430] [main/INFO] [net.minecraftforge.data.loading.DatagenModLoader/]: Initializing Data Gatherer for mods [craftdustry]
+[23févr.2025 13:57:59.638] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/Users/paul/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.21.1-52.0.38_mapped_parchment_2024.11.17-1.21.1/forge-1.21.1-52.0.38_mapped_parchment_2024.11.17-1.21.1.jar%230!/assets/.mcassetsroot' uses unexpected schema
+[23févr.2025 13:57:59.639] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/Users/paul/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.21.1-52.0.38_mapped_parchment_2024.11.17-1.21.1/forge-1.21.1-52.0.38_mapped_parchment_2024.11.17-1.21.1.jar%230!/data/.mcassetsroot' uses unexpected schema
+[23févr.2025 13:57:59.926] [main/WARN] [net.minecraft.server.packs.PathPackResources/]: Non [a-z0-9_.-] character in namespace .DS_Store in pack /Users/paul/IdeaProjects/CraftDustry/src/main/resources, ignoring
+[23févr.2025 13:58:00.442] [main/WARN] [net.minecraft.server.packs.PathPackResources/]: Non [a-z0-9_.-] character in namespace .DS_Store in pack /Users/paul/IdeaProjects/CraftDustry/src/main/resources, ignoring
+[23févr.2025 13:58:01.239] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Recipes
+[23févr.2025 13:58:01.242] [main/INFO] [net.minecraft.data.DataGenerator/]: Recipes finished after 1 ms
+[23févr.2025 13:58:01.242] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Loot Tables
+[23févr.2025 13:58:01.339] [main/INFO] [net.minecraft.data.DataGenerator/]: Loot Tables finished after 96 ms
+[23févr.2025 13:58:01.339] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Tags for minecraft:block mod id craftdustry
+[23févr.2025 13:58:01.374] [main/INFO] [net.minecraft.data.DataGenerator/]: Tags for minecraft:block mod id craftdustry finished after 34 ms
+[23févr.2025 13:58:01.374] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Tags for minecraft:item mod id craftdustry
+[23févr.2025 13:58:01.375] [main/INFO] [net.minecraft.data.DataGenerator/]: Tags for minecraft:item mod id craftdustry finished after 0 ms
+[23févr.2025 13:58:01.375] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Item Models: craftdustry
+[23févr.2025 13:58:01.375] [main/INFO] [net.minecraft.data.DataGenerator/]: Item Models: craftdustry finished after 0 ms
+[23févr.2025 13:58:01.375] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Block States: craftdustry
+[23févr.2025 13:58:01.375] [main/INFO] [net.minecraft.data.DataGenerator/]: Block States: craftdustry finished after 0 ms
+[23févr.2025 13:58:01.375] [main/INFO] [net.minecraft.data.DataGenerator/]: All providers took: 136 ms
+[23févr.2025 13:58:01.460] [main/INFO] [net.minecraft.data.HashCache/]: Caching: total files: 9, old count: 8, new count: 10, removed stale: 0, written: 1

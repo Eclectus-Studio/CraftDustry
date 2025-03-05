@@ -12,13 +12,13 @@ import org.minetrio1256.craftdustry.Main;
 import java.util.concurrent.CompletableFuture;
 
 public class ModItemTagGenerator extends ItemTagsProvider {
-    public ModItemTagGenerator(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> completableFuture,
-                               CompletableFuture<TagLookup<Block>> lookupCompletableFuture, @Nullable ExistingFileHelper existingFileHelper) {
+    public ModItemTagGenerator(final PackOutput packOutput, final CompletableFuture<HolderLookup.Provider> completableFuture,
+                               final CompletableFuture<TagLookup<Block>> lookupCompletableFuture, @Nullable final ExistingFileHelper existingFileHelper) {
         super(packOutput, completableFuture, lookupCompletableFuture, Main.MOD_ID, existingFileHelper);
     }
 
     @Override
-    protected void addTags(HolderLookup.Provider provider) {
+    protected void addTags(final HolderLookup.Provider provider) {
         //tag(Modtags.Items.TRANSFORMABLE_ITEMS)
                // .add(ModItems.AZURITE.get())
                 //.add(ModItems.RAW_AZURITE.get());

@@ -10,38 +10,37 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import org.minetrio1256.craftdustry.api.item.IItemTransfer;
 import org.minetrio1256.craftdustry.block.custom.belts.Belts;
 import org.minetrio1256.craftdustry.block.entity.modBlockEntities;
 
-public class BeltsBlockEntity extends BlockEntity {
+public class BeltsBlockEntity extends BlockEntity implements IItemTransfer {
     public final ItemStackHandler itemHandler = new ItemStackHandler(8) {
         @Override
-        protected void onContentsChanged(int slot) {
-            setChanged();
-            if (!level.isClientSide()) {
-                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+        protected void onContentsChanged(final int slot) {
+            BeltsBlockEntity.this.setChanged();
+            if (!BeltsBlockEntity.this.level.isClientSide()) {
+                BeltsBlockEntity.this.level.sendBlockUpdated(BeltsBlockEntity.this.getBlockPos(), BeltsBlockEntity.this.getBlockState(), BeltsBlockEntity.this.getBlockState(), 3);
             }
         }
 
         @Override
-        public int getSlotLimit(int slot) {
+        public int getSlotLimit(final int slot) {
             // Limit the stack size to 1 for each slot
             return 1;
         }
 
         @Override
-        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+        public ItemStack insertItem(final int slot, final ItemStack stack, final boolean simulate) {
             // Only allow inserting a single item at a time
-            if (stack.getCount() > 1) {
-                ItemStack singleItemStack = stack.copy();
+            if (1 < stack.getCount()) {
+                final ItemStack singleItemStack = stack.copy();
                 singleItemStack.setCount(1);
-                ItemStack remaining = stack.copy();
+                final ItemStack remaining = stack.copy();
                 remaining.setCount(stack.getCount() - 1);
 
                 if (!simulate) {
@@ -65,81 +64,122 @@ public class BeltsBlockEntity extends BlockEntity {
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
 
-    public BeltsBlockEntity(BlockPos pPos, BlockState pBlockState) {
+    public BeltsBlockEntity(final BlockPos pPos, final BlockState pBlockState) {
         super(modBlockEntities.BELTS_BE.get(), pPos, pBlockState);
     }
 
     @Override
     public void onLoad() {
         super.onLoad();
-        lazyItemHandler = LazyOptional.of(() -> itemHandler);
+        this.lazyItemHandler = LazyOptional.of(() -> this.itemHandler);
     }
 
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();
-        lazyItemHandler.invalidate();
+        this.lazyItemHandler.invalidate();
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        pTag.put("itemHandler", itemHandler.serializeNBT(pRegistries));
+    protected void saveAdditional(final CompoundTag pTag, final HolderLookup.Provider pRegistries) {
+        pTag.put("itemHandler", this.itemHandler.serializeNBT(pRegistries));
 
         super.saveAdditional(pTag, pRegistries);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
+    protected void loadAdditional(final CompoundTag pTag, final HolderLookup.Provider pRegistries) {
         super.loadAdditional(pTag, pRegistries);
 
-        itemHandler.deserializeNBT(pRegistries, pTag.getCompound("inventory"));
+        this.itemHandler.deserializeNBT(pRegistries, pTag.getCompound("inventory"));
     }
 
     public void drops() {
-        SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
-        for (int i = 0; i < itemHandler.getSlots(); i++) {
-            inventory.setItem(i, itemHandler.getStackInSlot(i));
+        final SimpleContainer inventory = new SimpleContainer(this.itemHandler.getSlots());
+        for (int i = 0; i < this.itemHandler.getSlots(); i++) {
+            inventory.setItem(i, this.itemHandler.getStackInSlot(i));
         }
 
-        Containers.dropContents(this.level, this.worldPosition, inventory);
+        Containers.dropContents(level, worldPosition, inventory);
     }
-    public void tick(Level level, BlockPos pos, BlockState state) {
+    public void tick(final Level level, final BlockPos pos, final BlockState state) {
         if (level.isClientSide()) return;
 
-        for (int i = itemHandler.getSlots() - 1; i > 0; i--) {
-            ItemStack current = itemHandler.getStackInSlot(i);
-            ItemStack previous = itemHandler.getStackInSlot(i - 1);
+        // Move items forward in the belt itemHandler
+        for (int i = this.itemHandler.getSlots() - 1; 0 < i; i--) {
+            final ItemStack current = this.itemHandler.getStackInSlot(i);
+            final ItemStack previous = this.itemHandler.getStackInSlot(i - 1);
 
             if (current.isEmpty() && !previous.isEmpty()) {
-                itemHandler.setStackInSlot(i, previous.copy());
-                itemHandler.setStackInSlot(i - 1, ItemStack.EMPTY);
+                this.itemHandler.setStackInSlot(i, previous.copy()); // Move item forward
+                this.itemHandler.setStackInSlot(i - 1, ItemStack.EMPTY); // Clear previous slot
             }
         }
 
-        ItemStack lastItem = itemHandler.getStackInSlot(itemHandler.getSlots() - 1);
+        // Handle last slot (drop item if necessary)
+        final ItemStack lastItem = this.itemHandler.getStackInSlot(0);
         if (!lastItem.isEmpty()) {
-            BlockPos frontPos = pos.relative(state.getValue(Belts.FACING));
-            BlockEntity frontBlockEntity = level.getBlockEntity(frontPos);
+            final BlockPos frontPos = pos.relative(state.getValue(Belts.FACING)); // Get front position
+            final BlockEntity frontBlockEntity = level.getBlockEntity(frontPos);
 
-            if (frontBlockEntity != null) {
-                frontBlockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-                    for (int i = 0; i < handler.getSlots(); i++) {
-                        if (handler.insertItem(i, lastItem, true).isEmpty()) {
-                            handler.insertItem(i, lastItem.copy(), false);
-                            itemHandler.setStackInSlot(itemHandler.getSlots() - 1, ItemStack.EMPTY);
-                            break;
-                        }
-                    }
-                });
+            if (frontBlockEntity instanceof final IItemTransfer transfer && transfer.canInsert(lastItem)) {
+                if (transfer.insertItem(lastItem)) {
+                    this.itemHandler.setStackInSlot(this.itemHandler.getSlots() - 1, ItemStack.EMPTY); // Remove from belt
+                }
             }
         }
     }
 
     @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> capability) {
-        if (capability == ForgeCapabilities.ITEM_HANDLER) {
-            return lazyItemHandler.cast();
+    public boolean canInsert(final ItemStack stack) {
+        // Check if any slot in the itemHandler is empty
+        for (int i = 0; i < this.itemHandler.getSlots(); i++) {
+            if (this.itemHandler.getStackInSlot(i).isEmpty()) {
+                return true;
+            }
         }
-        return super.getCapability(capability);
+        return false;
+    }
+
+    @Override
+    public boolean insertItem(final ItemStack stack) {
+        if (!this.canInsert(stack)) return false;
+
+        for (int i = 0; i < this.itemHandler.getSlots(); i++) {
+            if (this.itemHandler.getStackInSlot(i).isEmpty()) {
+                this.itemHandler.setStackInSlot(i, stack.copy());
+                stack.setCount(0); // Mark the stack as used up
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canExtract(final ItemStack stack) {
+        // Allow extraction if any slot contains an item
+        for (int i = 0; i < this.itemHandler.getSlots(); i++) {
+            if (!this.itemHandler.getStackInSlot(i).isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public ItemStack extractItem() {
+        for (int i = 0; i < this.itemHandler.getSlots(); i++) {
+            final ItemStack stack = this.itemHandler.getStackInSlot(i);
+            if (!stack.isEmpty()) {
+                this.itemHandler.setStackInSlot(i, ItemStack.EMPTY);
+                return stack;
+            }
+        }
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    public boolean isValid() {
+        return false;
     }
 }

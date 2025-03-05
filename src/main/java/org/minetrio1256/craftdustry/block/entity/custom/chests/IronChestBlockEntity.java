@@ -25,51 +25,51 @@ import org.minetrio1256.craftdustry.screen.chests.iron_chest.IronChestMenu;
 public class IronChestBlockEntity extends BlockEntity implements MenuProvider {
     private final ItemStackHandler itemHandler = new ItemStackHandler(32) {
         @Override
-        protected void onContentsChanged(int slot) {
-            setChanged();
-            if (!level.isClientSide()) {
-                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+        protected void onContentsChanged(final int slot) {
+            IronChestBlockEntity.this.setChanged();
+            if (!IronChestBlockEntity.this.level.isClientSide()) {
+                IronChestBlockEntity.this.level.sendBlockUpdated(IronChestBlockEntity.this.getBlockPos(), IronChestBlockEntity.this.getBlockState(), IronChestBlockEntity.this.getBlockState(), 3);
             }
         }
     };
 
-    private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.of(() -> itemHandler);
+    private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.of(() -> this.itemHandler);
 
-    public IronChestBlockEntity(BlockPos pPos, BlockState pBlockState) {
+    public IronChestBlockEntity(final BlockPos pPos, final BlockState pBlockState) {
         super(modBlockEntities.IRON_CHEST_BE.get(), pPos, pBlockState);
     }
 
     @Override
     public void onLoad() {
         super.onLoad();
-        lazyItemHandler = LazyOptional.of(() -> itemHandler);
+        this.lazyItemHandler = LazyOptional.of(() -> this.itemHandler);
     }
 
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();
-        lazyItemHandler.invalidate();
+        this.lazyItemHandler.invalidate();
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        pTag.put("itemHandler", itemHandler.serializeNBT(pRegistries));
+    protected void saveAdditional(final CompoundTag pTag, final HolderLookup.Provider pRegistries) {
+        pTag.put("itemHandler", this.itemHandler.serializeNBT(pRegistries));
         super.saveAdditional(pTag, pRegistries);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
+    protected void loadAdditional(final CompoundTag pTag, final HolderLookup.Provider pRegistries) {
         super.loadAdditional(pTag, pRegistries);
-        itemHandler.deserializeNBT(pRegistries, pTag.getCompound("itemHandler")); // Fix: Corrected key name
+        this.itemHandler.deserializeNBT(pRegistries, pTag.getCompound("itemHandler")); // Fix: Corrected key name
     }
 
     public void drops() {
-        SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
-        for (int i = 0; i < itemHandler.getSlots(); i++) {
-            inventory.setItem(i, itemHandler.getStackInSlot(i));
+        final SimpleContainer inventory = new SimpleContainer(this.itemHandler.getSlots());
+        for (int i = 0; i < this.itemHandler.getSlots(); i++) {
+            inventory.setItem(i, this.itemHandler.getStackInSlot(i));
         }
 
-        Containers.dropContents(this.level, this.worldPosition, inventory);
+        Containers.dropContents(level, worldPosition, inventory);
     }
 
     @Override
@@ -79,14 +79,14 @@ public class IronChestBlockEntity extends BlockEntity implements MenuProvider {
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
+    public AbstractContainerMenu createMenu(final int i, final Inventory inventory, final Player player) {
         return new IronChestMenu(i, inventory, this);
     }
 
     @Override
-    public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap) {
+    public <T> @NotNull LazyOptional<T> getCapability(@NotNull final Capability<T> cap) {
         if (cap == ForgeCapabilities.ITEM_HANDLER) {
-            return lazyItemHandler.cast();
+            return this.lazyItemHandler.cast();
         }
         return super.getCapability(cap);
     }

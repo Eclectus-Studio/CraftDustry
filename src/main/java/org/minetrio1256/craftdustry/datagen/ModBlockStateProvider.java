@@ -10,7 +10,7 @@ import org.minetrio1256.craftdustry.Main;
 
 
 public class ModBlockStateProvider extends BlockStateProvider {
-    public ModBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
+    public ModBlockStateProvider(final PackOutput output, final ExistingFileHelper exFileHelper) {
         super(output, Main.MOD_ID, exFileHelper);
     }
 
@@ -19,7 +19,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         //blockWithItem(ModBlocks.AZURITE_BLOCK);
     }
 
-    private void blockWithItem(RegistryObject<Block> blockRegistryObject) {
-        simpleBlockWithItem(blockRegistryObject.get(), cubeAll(blockRegistryObject.get()));
+    private void blockWithItem(final RegistryObject<Block> blockRegistryObject) {
+        this.simpleBlockWithItem(blockRegistryObject.get(), this.cubeAll(blockRegistryObject.get()));
     }
 }

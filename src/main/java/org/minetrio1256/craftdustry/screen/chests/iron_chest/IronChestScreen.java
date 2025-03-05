@@ -13,34 +13,34 @@ public class IronChestScreen extends AbstractContainerScreen<IronChestMenu> {
     private static final ResourceLocation GUI_TEXTURE =
             ResourceLocation.fromNamespaceAndPath(Main.MOD_ID, "textures/gui/iron_chest/iron_chest.png");
 
-    public IronChestScreen(IronChestMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
+    public IronChestScreen(final IronChestMenu pMenu, final Inventory pPlayerInventory, final Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
     }
 
     @Override
     protected void init() {
         super.init();
-        this.inventoryLabelY = 89;
-        this.imageWidth = 176;
-        this.imageHeight = 183;
+        inventoryLabelY = 89;
+        imageWidth = 176;
+        imageHeight = 183;
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int pMouseX, int pMouseY) {
+    protected void renderBg(final GuiGraphics guiGraphics, final float partialTicks, final int pMouseX, final int pMouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, GUI_TEXTURE);
-        int x = (width - imageWidth) / 2;
-        int y = (height - imageHeight) / 2;
+        RenderSystem.setShaderTexture(0, IronChestScreen.GUI_TEXTURE);
+        final int x = (this.width - this.imageWidth) / 2;
+        final int y = (this.height - this.imageHeight) / 2;
 
-        guiGraphics.blit(GUI_TEXTURE, x, y + 9, 0, 0, imageWidth, imageHeight);
+        guiGraphics.blit(IronChestScreen.GUI_TEXTURE, x, y + 9, 0, 0, this.imageWidth, this.imageHeight);
 
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-        renderBackground(guiGraphics, mouseX, mouseY, delta);
+    public void render(final GuiGraphics guiGraphics, final int mouseX, final int mouseY, final float delta) {
+        this.renderBackground(guiGraphics, mouseX, mouseY, delta);
         super.render(guiGraphics, mouseX, mouseY, delta);
-        renderTooltip(guiGraphics, mouseX, mouseY);
+        this.renderTooltip(guiGraphics, mouseX, mouseY);
     }
 }

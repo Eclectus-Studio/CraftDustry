@@ -15,23 +15,23 @@ import org.minetrio1256.craftdustry.screen.ModMenuTypes;
 public class IronChestMenu extends AbstractContainerMenu {
     public final IronChestBlockEntity ironChestBlockEntity;
 
-    public IronChestMenu(int pContainerId, Inventory inventory, FriendlyByteBuf extraData) {
+    public IronChestMenu(final int pContainerId, final Inventory inventory, final FriendlyByteBuf extraData) {
         this(pContainerId, inventory, inventory.player.level().getBlockEntity(extraData.readBlockPos()));
     }
 
-    public IronChestMenu(int pContainerId, Inventory inv, BlockEntity blockEntity) {
+    public IronChestMenu(final int pContainerId, final Inventory inv, final BlockEntity blockEntity) {
         super(ModMenuTypes.IRON_CHEST_MENU.get(), pContainerId);
-        ironChestBlockEntity = ((IronChestBlockEntity) blockEntity);
+        this.ironChestBlockEntity = ((IronChestBlockEntity) blockEntity);
 
-        addPlayerInventory(inv);
-        addPlayerHotbar(inv);
+        this.addPlayerInventory(inv);
+        this.addPlayerHotbar(inv);
 
-        this.ironChestBlockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(itemHandler -> {
+        ironChestBlockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(itemHandler -> {
             int slotIndex = 0;
-            for (int y = 0; y < 4; y++) {
-                for (int x = 0; x < 9; x++) {
-                    if (slotIndex >= 32) break;
-                    this.addSlot(new SlotItemHandler(itemHandler, slotIndex, 8 + x * 18, 18 + y * 18));
+            for (int y = 0; 4 > y; y++) {
+                for (int x = 0; 9 > x; x++) {
+                    if (32 <= slotIndex) break;
+                    addSlot(new SlotItemHandler(itemHandler, slotIndex, 8 + x * 18, 18 + y * 18));
                     slotIndex++;
                 }
             }
@@ -49,30 +49,30 @@ public class IronChestMenu extends AbstractContainerMenu {
     private static final int HOTBAR_SLOT_COUNT = 9;
     private static final int PLAYER_INVENTORY_ROW_COUNT = 3;
     private static final int PLAYER_INVENTORY_COLUMN_COUNT = 9;
-    private static final int PLAYER_INVENTORY_SLOT_COUNT = PLAYER_INVENTORY_COLUMN_COUNT * PLAYER_INVENTORY_ROW_COUNT;
-    private static final int VANILLA_SLOT_COUNT = HOTBAR_SLOT_COUNT + PLAYER_INVENTORY_SLOT_COUNT;
+    private static final int PLAYER_INVENTORY_SLOT_COUNT = IronChestMenu.PLAYER_INVENTORY_COLUMN_COUNT * IronChestMenu.PLAYER_INVENTORY_ROW_COUNT;
+    private static final int VANILLA_SLOT_COUNT = IronChestMenu.HOTBAR_SLOT_COUNT + IronChestMenu.PLAYER_INVENTORY_SLOT_COUNT;
     private static final int VANILLA_FIRST_SLOT_INDEX = 0;
-    private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
+    private static final int TE_INVENTORY_FIRST_SLOT_INDEX = IronChestMenu.VANILLA_FIRST_SLOT_INDEX + IronChestMenu.VANILLA_SLOT_COUNT;
 
     // THIS YOU HAVE TO DEFINE!
     private static final int TE_INVENTORY_SLOT_COUNT = 32;
     @Override
-    public ItemStack quickMoveStack(Player playerIn, int pIndex) {
-        Slot sourceSlot = slots.get(pIndex);
-        if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;  //EMPTY_ITEM
-        ItemStack sourceStack = sourceSlot.getItem();
-        ItemStack copyOfSourceStack = sourceStack.copy();
+    public ItemStack quickMoveStack(final Player playerIn, final int pIndex) {
+        final Slot sourceSlot = this.slots.get(pIndex);
+        if (null == sourceSlot || !sourceSlot.hasItem()) return ItemStack.EMPTY;  //EMPTY_ITEM
+        final ItemStack sourceStack = sourceSlot.getItem();
+        final ItemStack copyOfSourceStack = sourceStack.copy();
 
         // Check if the slot clicked is one of the vanilla container slots
-        if (pIndex < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
+        if (VANILLA_FIRST_SLOT_INDEX + IronChestMenu.VANILLA_SLOT_COUNT > pIndex) {
             // This is a vanilla container slot so merge the stack into the tile inventory
-            if (!moveItemStackTo(sourceStack, TE_INVENTORY_FIRST_SLOT_INDEX, TE_INVENTORY_FIRST_SLOT_INDEX
-                    + TE_INVENTORY_SLOT_COUNT, false)) {
+            if (!this.moveItemStackTo(sourceStack, IronChestMenu.TE_INVENTORY_FIRST_SLOT_INDEX, IronChestMenu.TE_INVENTORY_FIRST_SLOT_INDEX
+                    + IronChestMenu.TE_INVENTORY_SLOT_COUNT, false)) {
                 return ItemStack.EMPTY;  // EMPTY_ITEM
             }
-        } else if (pIndex < TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT) {
+        } else if (TE_INVENTORY_FIRST_SLOT_INDEX + IronChestMenu.TE_INVENTORY_SLOT_COUNT > pIndex) {
             // This is a TE slot so merge the stack into the players inventory
-            if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
+            if (!this.moveItemStackTo(sourceStack, IronChestMenu.VANILLA_FIRST_SLOT_INDEX, IronChestMenu.VANILLA_FIRST_SLOT_INDEX + IronChestMenu.VANILLA_SLOT_COUNT, false)) {
                 return ItemStack.EMPTY;
             }
         } else {
@@ -80,7 +80,7 @@ public class IronChestMenu extends AbstractContainerMenu {
             return ItemStack.EMPTY;
         }
         // If stack size == 0 (the entire stack was moved) set slot contents to null
-        if (sourceStack.getCount() == 0) {
+        if (0 == sourceStack.getCount()) {
             sourceSlot.set(ItemStack.EMPTY);
         } else {
             sourceSlot.setChanged();
@@ -90,21 +90,21 @@ public class IronChestMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(Player player) {
+    public boolean stillValid(final Player player) {
         return true;
     }
 
-    private void addPlayerInventory(Inventory playerInventory) {
-        for (int i = 0; i < 3; ++i) {
-            for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 101 + i * 18));
+    private void addPlayerInventory(final Inventory playerInventory) {
+        for (int i = 0; 3 > i; ++i) {
+            for (int l = 0; 9 > l; ++l) {
+                addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 101 + i * 18));
             }
         }
     }
 
-    private void addPlayerHotbar(Inventory playerInventory) {
-        for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 159));
+    private void addPlayerHotbar(final Inventory playerInventory) {
+        for (int i = 0; 9 > i; ++i) {
+            addSlot(new Slot(playerInventory, i, 8 + i * 18, 159));
         }
     }
 }

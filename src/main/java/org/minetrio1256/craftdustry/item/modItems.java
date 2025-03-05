@@ -9,7 +9,7 @@ import org.minetrio1256.craftdustry.Main;
 public class modItems {
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, Main.MOD_ID);
-    public static void register(IEventBus eventBus) {
-        ITEMS.register(eventBus);
+    public static void register(final IEventBus eventBus) {
+        modItems.ITEMS.register(eventBus);
     }
 }

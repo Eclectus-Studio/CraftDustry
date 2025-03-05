@@ -22,33 +22,33 @@ import org.minetrio1256.craftdustry.block.entity.custom.chests.IronChestBlockEnt
 import java.util.function.Function;
 
 public class IronChest extends BaseEntityBlock {
-    public static final MapCodec<IronChest> CODEC = simpleCodec((Function<BlockBehaviour.Properties, IronChest>) IronChest::new);
+    public static final MapCodec<IronChest> CODEC = BlockBehaviour.simpleCodec(IronChest::new);
 
-    public IronChest(BlockBehaviour.Properties pProperties) {
+    public IronChest(final BlockBehaviour.Properties pProperties) {
         super(pProperties);
     }
 
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
+        return IronChest.CODEC;
     }
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+    public BlockEntity newBlockEntity(final BlockPos blockPos, final BlockState blockState) {
         return new IronChestBlockEntity(blockPos, blockState);
     }
 
     @Override
-    protected RenderShape getRenderShape(BlockState pState) {
+    protected RenderShape getRenderShape(final BlockState pState) {
         return RenderShape.MODEL;
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
+    public void onRemove(final BlockState pState, final Level pLevel, final BlockPos pPos, final BlockState pNewState, final boolean pIsMoving) {
         if (pState.getBlock() != pNewState.getBlock()) {
-            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-            if (blockEntity instanceof IronChestBlockEntity ironChestBlockEntity) {
+            final BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
+            if (blockEntity instanceof final IronChestBlockEntity ironChestBlockEntity) {
                 ironChestBlockEntity.drops();
             }
         }
@@ -57,10 +57,10 @@ public class IronChest extends BaseEntityBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos,
-                                              Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
-        if (pLevel.getBlockEntity(pPos) instanceof IronChestBlockEntity ironChestBlockEntity) {
-            if (pPlayer instanceof ServerPlayer serverPlayer) { // Check before casting
+    protected ItemInteractionResult useItemOn(final ItemStack pStack, final BlockState pState, final Level pLevel, final BlockPos pPos,
+                                              final Player pPlayer, final InteractionHand pHand, final BlockHitResult pHitResult) {
+        if (pLevel.getBlockEntity(pPos) instanceof final IronChestBlockEntity ironChestBlockEntity) {
+            if (pPlayer instanceof final ServerPlayer serverPlayer) { // Check before casting
                 serverPlayer.openMenu(new SimpleMenuProvider(ironChestBlockEntity, Component.translatable("name.craftdustry.wooden_chest")), pPos);
             }
             return ItemInteractionResult.SUCCESS;
