@@ -12,10 +12,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import org.minetrio1256.craftdustry.api.item.IItemTransfer;
 import org.minetrio1256.craftdustry.block.custom.underground.UnderGroundBeltInput;
 import org.minetrio1256.craftdustry.block.entity.modBlockEntities;
 
-public class UnderGroundBeltInputBlockEntity extends BlockEntity {
+public class UnderGroundBeltInputBlockEntity extends BlockEntity implements IItemTransfer {
     public final ItemStackHandler itemHandler = new ItemStackHandler(8) {
         @Override
         protected void onContentsChanged(final int slot) {
@@ -79,7 +80,7 @@ public class UnderGroundBeltInputBlockEntity extends BlockEntity {
 
     @Override
     protected void saveAdditional(final CompoundTag pTag, final HolderLookup.Provider pRegistries) {
-        pTag.put("itemHandler", this.itemHandler.serializeNBT(pRegistries));
+        pTag.put("inventory", this.itemHandler.serializeNBT(pRegistries));
 
         super.saveAdditional(pTag, pRegistries);
     }
@@ -169,5 +170,58 @@ public class UnderGroundBeltInputBlockEntity extends BlockEntity {
                 }
             }
         }
+    }
+
+    @Override
+    public boolean canInsert(final ItemStack stack) {
+        // Check if any slot in the itemHandler is empty
+        for (int i = 0; i < 8; i++) {
+            if (this.itemHandler.getStackInSlot(i).isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean insertItem(final ItemStack stack) {
+        if (!this.canInsert(stack)) return false;
+
+        for (int i = 0; i < 8; i++) {
+            if (this.itemHandler.getStackInSlot(i).isEmpty()) {
+                this.itemHandler.setStackInSlot(i, stack.copy());
+                stack.setCount(0); // Mark the stack as used up
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canExtract(final ItemStack stack) {
+        // Allow extraction if any slot contains an item
+        for (int i = 0; i < this.itemHandler.getSlots(); i++) {
+            if (!this.itemHandler.getStackInSlot(i).isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public ItemStack extractItem() {
+        for (int i = 0; i < 8; i++) {
+            final ItemStack stack = this.itemHandler.getStackInSlot(i);
+            if (!stack.isEmpty()) {
+                this.itemHandler.setStackInSlot(i, ItemStack.EMPTY);
+                return stack;
+            }
+        }
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    public boolean isValid() {
+        return false;
     }
 }

@@ -13,6 +13,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.minetrio1256.craftdustry.api.item.IItemTransfer;
+import org.minetrio1256.craftdustry.block.custom.belts.Belts;
 import org.minetrio1256.craftdustry.block.custom.belts.TurboBelts;
 import org.minetrio1256.craftdustry.block.entity.modBlockEntities;
 
@@ -106,25 +107,25 @@ public class TurboBeltsBlockEntity extends BlockEntity implements IItemTransfer 
 
         for (int step = 0; 4 > step; step++) { // Run 4 times per tick
             // Move items forward in the belt itemHandler
-            for (int i = this.itemHandler.getSlots() - 1; 0 < i; i--) {
-                final ItemStack current = this.itemHandler.getStackInSlot(i);
-                final ItemStack previous = this.itemHandler.getStackInSlot(i - 1);
+            for (int i = itemHandler.getSlots() - 1; i > 0; i--) {
+                ItemStack current = itemHandler.getStackInSlot(i);
+                ItemStack previous = itemHandler.getStackInSlot(i - 1);
 
                 if (current.isEmpty() && !previous.isEmpty()) {
-                    this.itemHandler.setStackInSlot(i, previous.copy()); // Move item forward
-                    this.itemHandler.setStackInSlot(i - 1, ItemStack.EMPTY); // Clear previous slot
+                    itemHandler.setStackInSlot(i, previous.copy()); // Move item forward
+                    itemHandler.setStackInSlot(i - 1, ItemStack.EMPTY); // Clear previous slot
                 }
             }
 
             // Handle last slot (drop item if necessary)
-            final ItemStack lastItem = this.itemHandler.getStackInSlot(0);
+            ItemStack lastItem = itemHandler.getStackInSlot(itemHandler.getSlots() - 1);
             if (!lastItem.isEmpty()) {
-                final BlockPos frontPos = pos.relative(state.getValue(TurboBelts.FACING)); // Get front position
-                final BlockEntity frontBlockEntity = level.getBlockEntity(frontPos);
+                BlockPos frontPos = pos.relative(state.getValue(TurboBelts.FACING)); // Get front position
+                BlockEntity frontBlockEntity = level.getBlockEntity(frontPos);
 
-                if (frontBlockEntity instanceof final IItemTransfer transfer && transfer.canInsert(lastItem)) {
+                if (frontBlockEntity instanceof IItemTransfer transfer && transfer.canInsert(lastItem)) {
                     if (transfer.insertItem(lastItem)) {
-                        this.itemHandler.setStackInSlot(this.itemHandler.getSlots() - 1, ItemStack.EMPTY); // Remove from belt
+                        itemHandler.setStackInSlot(itemHandler.getSlots() - 1, ItemStack.EMPTY); // Remove from belt
                     }
                 }
             }
@@ -132,10 +133,10 @@ public class TurboBeltsBlockEntity extends BlockEntity implements IItemTransfer 
     }
 
     @Override
-    public boolean canInsert(final ItemStack stack) {
+    public boolean canInsert(ItemStack stack) {
         // Check if any slot in the itemHandler is empty
-        for (int i = 0; i < this.itemHandler.getSlots(); i++) {
-            if (this.itemHandler.getStackInSlot(i).isEmpty()) {
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            if (itemHandler.getStackInSlot(i).isEmpty()) {
                 return true;
             }
         }
@@ -143,12 +144,12 @@ public class TurboBeltsBlockEntity extends BlockEntity implements IItemTransfer 
     }
 
     @Override
-    public boolean insertItem(final ItemStack stack) {
-        if (!this.canInsert(stack)) return false;
+    public boolean insertItem(ItemStack stack) {
+        if (!canInsert(stack)) return false;
 
-        for (int i = 0; i < this.itemHandler.getSlots(); i++) {
-            if (this.itemHandler.getStackInSlot(i).isEmpty()) {
-                this.itemHandler.setStackInSlot(i, stack.copy());
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            if (itemHandler.getStackInSlot(i).isEmpty()) {
+                itemHandler.setStackInSlot(i, stack.copy());
                 stack.setCount(0); // Mark the stack as used up
                 return true;
             }
@@ -157,10 +158,10 @@ public class TurboBeltsBlockEntity extends BlockEntity implements IItemTransfer 
     }
 
     @Override
-    public boolean canExtract(final ItemStack stack) {
+    public boolean canExtract(ItemStack stack) {
         // Allow extraction if any slot contains an item
-        for (int i = 0; i < this.itemHandler.getSlots(); i++) {
-            if (!this.itemHandler.getStackInSlot(i).isEmpty()) {
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            if (!itemHandler.getStackInSlot(i).isEmpty()) {
                 return true;
             }
         }
@@ -169,10 +170,10 @@ public class TurboBeltsBlockEntity extends BlockEntity implements IItemTransfer 
 
     @Override
     public ItemStack extractItem() {
-        for (int i = 0; i < this.itemHandler.getSlots(); i++) {
-            final ItemStack stack = this.itemHandler.getStackInSlot(i);
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            ItemStack stack = itemHandler.getStackInSlot(i);
             if (!stack.isEmpty()) {
-                this.itemHandler.setStackInSlot(i, ItemStack.EMPTY);
+                itemHandler.setStackInSlot(i, ItemStack.EMPTY);
                 return stack;
             }
         }

@@ -80,7 +80,7 @@ public class UnderGroundBeltOutputBlockEntity extends BlockEntity implements IIt
 
     @Override
     protected void saveAdditional(final CompoundTag pTag, final HolderLookup.Provider pRegistries) {
-        pTag.put("itemHandler", this.itemHandler.serializeNBT(pRegistries));
+        pTag.put("inventory", this.itemHandler.serializeNBT(pRegistries));
 
         super.saveAdditional(pTag, pRegistries);
     }

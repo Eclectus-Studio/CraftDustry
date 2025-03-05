@@ -139,7 +139,7 @@ public class FastBelts extends BaseEntityBlock {
     @Override
     public void entityInside(final BlockState pState, final Level pLevel, final BlockPos pPos, final Entity pEntity) {
         if (pEntity instanceof final ItemEntity itemEntity) {
-            if (pLevel.getBlockEntity(pPos) instanceof final BeltsBlockEntity beltsBlockEntity) {
+            if (pLevel.getBlockEntity(pPos) instanceof final FastBeltsBlockEntity beltsBlockEntity) {
                 final ItemStackHandler itemHandler = beltsBlockEntity.itemHandler;
 
                 for (int i = 0; i < itemHandler.getSlots(); i++) {
