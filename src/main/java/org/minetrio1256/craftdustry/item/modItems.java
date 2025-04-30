@@ -5,12 +5,12 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import org.minetrio1256.craftdustry.Main;
+import org.minetrio1256.craftdustry.Craftdustry;
 import org.minetrio1256.craftdustry.item.custom.*;
 
 public class modItems {
     public static final DeferredRegister<Item> ITEMS =
-            DeferredRegister.create(ForgeRegistries.ITEMS, Main.MOD_ID);
+            DeferredRegister.create(ForgeRegistries.ITEMS, Craftdustry.MOD_ID);
 
     public static final RegistryObject<Item> COAL = ITEMS.register("coal",
             () -> new Coal(new Item.Properties()));

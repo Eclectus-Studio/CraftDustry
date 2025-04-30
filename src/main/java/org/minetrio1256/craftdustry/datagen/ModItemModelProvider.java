@@ -3,12 +3,12 @@ package org.minetrio1256.craftdustry.datagen;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import org.minetrio1256.craftdustry.Main;
+import org.minetrio1256.craftdustry.Craftdustry;
 
 
 public class ModItemModelProvider extends ItemModelProvider {
     public ModItemModelProvider(final PackOutput output, final ExistingFileHelper existingFileHelper) {
-        super(output, Main.MOD_ID, existingFileHelper);
+        super(output, Craftdustry.MOD_ID, existingFileHelper);
     }
 
     @Override

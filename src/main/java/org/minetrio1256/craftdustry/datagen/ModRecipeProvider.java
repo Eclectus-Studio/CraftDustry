@@ -7,7 +7,7 @@ import net.minecraft.data.recipes.*;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
-import org.minetrio1256.craftdustry.Main;
+import org.minetrio1256.craftdustry.Craftdustry;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -54,7 +54,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                                                                        final List<ItemLike> pIngredients, final RecipeCategory pCategory, final ItemLike pResult, final float pExperience, final int pCookingTime, final String pGroup, final String pRecipeName) {
         for(final ItemLike itemlike : pIngredients) {
             SimpleCookingRecipeBuilder.generic(Ingredient.of(itemlike), pCategory, pResult, pExperience, pCookingTime, pCookingSerializer, factory).group(pGroup).unlockedBy(RecipeProvider.getHasName(itemlike), RecipeProvider.has(itemlike))
-                    .save(recipeOutput, Main.MOD_ID + ":" + RecipeProvider.getItemName(pResult) + pRecipeName + "_" + RecipeProvider.getItemName(itemlike));
+                    .save(recipeOutput, Craftdustry.MOD_ID + ":" + RecipeProvider.getItemName(pResult) + pRecipeName + "_" + RecipeProvider.getItemName(itemlike));
         }
     }
 }

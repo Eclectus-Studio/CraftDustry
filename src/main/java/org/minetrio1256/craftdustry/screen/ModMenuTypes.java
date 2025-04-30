@@ -8,7 +8,7 @@ import net.minecraftforge.network.IContainerFactory;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import org.minetrio1256.craftdustry.Main;
+import org.minetrio1256.craftdustry.Craftdustry;
 import org.minetrio1256.craftdustry.screen.chests.iron_chest.IronChestMenu;
 import org.minetrio1256.craftdustry.screen.chests.wooden_chest.WoodenChestMenu;
 
@@ -16,7 +16,7 @@ import org.minetrio1256.craftdustry.screen.chests.wooden_chest.WoodenChestMenu;
 public enum ModMenuTypes {
     ;
     public static final DeferredRegister<MenuType<?>> MENUS =
-            DeferredRegister.create(ForgeRegistries.MENU_TYPES, Main.MOD_ID);
+            DeferredRegister.create(ForgeRegistries.MENU_TYPES, Craftdustry.MOD_ID);
 
     public static final RegistryObject<MenuType<WoodenChestMenu>> WOODEN_CHEST_MENU =
             ModMenuTypes.registerMenuType("wooden_chest_menu", WoodenChestMenu::new);

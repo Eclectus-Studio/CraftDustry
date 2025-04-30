@@ -11,7 +11,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
 
-import org.minetrio1256.craftdustry.Main;
+import org.minetrio1256.craftdustry.Craftdustry;
 import org.minetrio1256.craftdustry.block.custom.belts.Belts;
 import org.minetrio1256.craftdustry.block.custom.belts.ExpressBelts;
 import org.minetrio1256.craftdustry.block.custom.belts.FastBelts;
@@ -24,7 +24,7 @@ import org.minetrio1256.craftdustry.item.modItems;
 
 public class modBlocks {
     public static final DeferredRegister<Block> BLOCKS =
-            DeferredRegister.create(ForgeRegistries.BLOCKS, Main.MOD_ID);
+            DeferredRegister.create(ForgeRegistries.BLOCKS, Craftdustry.MOD_ID);
 
     public static final RegistryObject<Block> BELTS = modBlocks.registerBlock("belts",
             () -> new Belts(BlockBehaviour.Properties.of().strength(2.0f).requiresCorrectToolForDrops().randomTicks()));

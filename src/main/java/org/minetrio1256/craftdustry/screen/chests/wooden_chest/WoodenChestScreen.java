@@ -7,11 +7,11 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import org.minetrio1256.craftdustry.Main;
+import org.minetrio1256.craftdustry.Craftdustry;
 
 public class WoodenChestScreen extends AbstractContainerScreen<WoodenChestMenu> {
     private static final ResourceLocation GUI_TEXTURE =
-            ResourceLocation.fromNamespaceAndPath(Main.MOD_ID, "textures/gui/wooden_chest/wooden_chest.png");
+            ResourceLocation.fromNamespaceAndPath(Craftdustry.MOD_ID, "textures/gui/wooden_chest/wooden_chest.png");
 
     public WoodenChestScreen(final WoodenChestMenu pMenu, final Inventory pPlayerInventory, final Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);

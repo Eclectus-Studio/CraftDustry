@@ -230,8 +230,8 @@
 [23févr.2025 13:57:57.738] [main/DEBUG] [net.minecraftforge.registries.GameData/REGISTRIES]: Vanilla freeze snapshot created
 [23févr.2025 13:57:57.739] [main/DEBUG] [net.minecraftforge.fml.ModWorkManager/LOADING]: Using 4 threads for parallel mod-loading
 [23févr.2025 13:57:57.769] [main/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLJavaModLanguageProvider/LOADING]: Loading FMLModContainer from classloader TransformingClassLoader[TRANSFORMER]@621014131 - got SecureModuleClassLoader[LAYER PLUGIN]@303846650
-[23févr.2025 13:57:57.773] [main/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLModContainer/LOADING]: Creating FMLModContainer instance for org.minetrio1256.craftdustry.Main
-[23févr.2025 13:57:57.789] [main/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLModContainer/LOADING]: Loaded modclass craftdustry/org.minetrio1256.craftdustry.Main with TransformingClassLoader[TRANSFORMER]@621014131
+[23févr.2025 13:57:57.773] [main/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLModContainer/LOADING]: Creating FMLModContainer instance for org.minetrio1256.craftdustry.Craftdustry
+[23févr.2025 13:57:57.789] [main/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLModContainer/LOADING]: Loaded modclass craftdustry/org.minetrio1256.craftdustry.Craftdustry with TransformingClassLoader[TRANSFORMER]@621014131
 [23févr.2025 13:57:57.791] [main/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLJavaModLanguageProvider/LOADING]: Loading FMLModContainer from classloader TransformingClassLoader[TRANSFORMER]@621014131 - got SecureModuleClassLoader[LAYER PLUGIN]@303846650
 [23févr.2025 13:57:57.791] [main/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLModContainer/LOADING]: Creating FMLModContainer instance for net.minecraftforge.common.ForgeMod
 [23févr.2025 13:57:57.794] [main/DEBUG] [net.minecraftforge.fml.javafmlmod.FMLModContainer/LOADING]: Loaded modclass net.minecraftforge.forge/net.minecraftforge.common.ForgeMod with TransformingClassLoader[TRANSFORMER]@621014131
@@ -247,7 +247,7 @@
 [23févr.2025 13:57:58.241] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Opening jdk.naming.dns/com.sun.jndi.dns to java.naming
 [23févr.2025 13:57:58.297] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Attempting to inject @EventBusSubscriber classes into the eventbus for craftdustry
 [23févr.2025 13:57:58.300] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing org.minetrio1256.craftdustry.Config to MOD
-[23févr.2025 13:57:58.421] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing org.minetrio1256.craftdustry.Main$ClientModEvents to MOD
+[23févr.2025 13:57:58.421] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing org.minetrio1256.craftdustry.Craftdustry$ClientModEvents to MOD
 [23févr.2025 13:57:58.508] [modloading-worker-0/DEBUG] [net.minecraftforge.fml.javafmlmod.AutomaticEventSubscriber/LOADING]: Auto-subscribing org.minetrio1256.craftdustry.datagen.DataGenerators to MOD
 [23févr.2025 13:57:58.633] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent0/]: -Dio.netty.noUnsafe: false
 [23févr.2025 13:57:58.633] [modloading-worker-0/DEBUG] [io.netty.util.internal.PlatformDependent0/]: Java version: 21

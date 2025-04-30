@@ -5,7 +5,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import org.minetrio1256.craftdustry.Main;
+import org.minetrio1256.craftdustry.Craftdustry;
 import org.minetrio1256.craftdustry.block.entity.custom.belts.BeltsBlockEntity;
 import org.minetrio1256.craftdustry.block.entity.custom.belts.ExpressBeltsBlockEntity;
 import org.minetrio1256.craftdustry.block.entity.custom.belts.FastBeltsBlockEntity;
@@ -18,7 +18,7 @@ import org.minetrio1256.craftdustry.block.modBlocks;
 
 public class modBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
-            DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Main.MOD_ID);
+            DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Craftdustry.MOD_ID);
 
     // Register the BlockEntityType for the Belts block
     public static final RegistryObject<BlockEntityType<BeltsBlockEntity>> BELTS_BE =

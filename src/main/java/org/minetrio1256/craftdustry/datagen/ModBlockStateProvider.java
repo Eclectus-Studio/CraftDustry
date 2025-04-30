@@ -6,12 +6,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
-import org.minetrio1256.craftdustry.Main;
+import org.minetrio1256.craftdustry.Craftdustry;
 
 
 public class ModBlockStateProvider extends BlockStateProvider {
     public ModBlockStateProvider(final PackOutput output, final ExistingFileHelper exFileHelper) {
-        super(output, Main.MOD_ID, exFileHelper);
+        super(output, Craftdustry.MOD_ID, exFileHelper);
     }
 
     @Override
