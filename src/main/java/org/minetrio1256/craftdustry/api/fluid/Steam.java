@@ -1,4 +1,9 @@
 package org.minetrio1256.craftdustry.api.fluid;
 
-public class Steam {
+import org.minetrio1256.craftdustry.api.energy.Temperature;
+
+public class Steam extends CraftdustryFluid{
+    public Steam(Temperature temperature) {
+        super("steam", temperature);
+    }
 }
