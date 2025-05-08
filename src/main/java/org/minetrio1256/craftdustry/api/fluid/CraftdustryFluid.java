@@ -1,5 +1,6 @@
 package org.minetrio1256.craftdustry.api.fluid;
 
+import net.minecraft.client.resources.PlayerSkin;
 import org.minetrio1256.craftdustry.api.energy.Temperature;
 
 public class CraftdustryFluid {
