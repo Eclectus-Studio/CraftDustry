@@ -1,4 +1,4 @@
-package org.minetrio1256.craftdustry.api.item;
+package org.minetrio1256.craftdustry.api.transport.item;
 
 import net.minecraft.world.item.ItemStack;
 

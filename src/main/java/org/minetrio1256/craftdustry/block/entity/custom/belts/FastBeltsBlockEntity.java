@@ -12,10 +12,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import org.minetrio1256.craftdustry.api.item.IItemTransfer;
-import org.minetrio1256.craftdustry.block.custom.belts.Belts;
+import org.minetrio1256.craftdustry.api.transport.item.IItemTransfer;
 import org.minetrio1256.craftdustry.block.custom.belts.FastBelts;
-import org.minetrio1256.craftdustry.block.custom.belts.TurboBelts;
 import org.minetrio1256.craftdustry.block.entity.modBlockEntities;
 
 public class FastBeltsBlockEntity extends BlockEntity implements IItemTransfer {

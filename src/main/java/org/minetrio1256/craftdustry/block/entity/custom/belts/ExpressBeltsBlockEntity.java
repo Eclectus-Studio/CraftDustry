@@ -1,24 +1,19 @@
 package org.minetrio1256.craftdustry.block.entity.custom.belts;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import org.minetrio1256.craftdustry.api.item.IItemTransfer;
-import org.minetrio1256.craftdustry.block.custom.belts.Belts;
+import org.minetrio1256.craftdustry.api.transport.item.IItemTransfer;
 import org.minetrio1256.craftdustry.block.custom.belts.ExpressBelts;
-import org.minetrio1256.craftdustry.block.custom.belts.FastBelts;
-import org.minetrio1256.craftdustry.block.custom.belts.TurboBelts;
 import org.minetrio1256.craftdustry.block.entity.modBlockEntities;
 
 public class ExpressBeltsBlockEntity extends BlockEntity implements IItemTransfer {
