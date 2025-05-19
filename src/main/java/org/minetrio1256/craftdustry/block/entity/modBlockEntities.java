@@ -12,6 +12,7 @@ import org.minetrio1256.craftdustry.block.entity.custom.belts.FastBeltsBlockEnti
 import org.minetrio1256.craftdustry.block.entity.custom.belts.TurboBeltsBlockEntity;
 import org.minetrio1256.craftdustry.block.entity.custom.chests.IronChestBlockEntity;
 import org.minetrio1256.craftdustry.block.entity.custom.chests.WoodenChestBE;
+import org.minetrio1256.craftdustry.block.entity.custom.electrical.SmallElectricPoleBlockEntity;
 import org.minetrio1256.craftdustry.block.entity.custom.underground.UnderGroundBeltInputBlockEntity;
 import org.minetrio1256.craftdustry.block.entity.custom.underground.UnderGroundBeltOutputBlockEntity;
 import org.minetrio1256.craftdustry.block.modBlocks;
@@ -47,6 +48,9 @@ public class modBlockEntities {
     public static final RegistryObject<BlockEntityType<UnderGroundBeltOutputBlockEntity>> UNDER_GROUND_OUTPUT_BELT_BE =
             modBlockEntities.BLOCK_ENTITIES.register("under_ground_output_belt", () -> BlockEntityType.Builder.of(
                     (pos, state) -> new UnderGroundBeltOutputBlockEntity(pos, state), modBlocks.UNDER_GROUND_BELT_OUTPUT.get()).build(null));
+    public static final RegistryObject<BlockEntityType<SmallElectricPoleBlockEntity>> SMALL_ELECTRIC_POLE_BE =
+            modBlockEntities.BLOCK_ENTITIES.register("small_electric_pole", () -> BlockEntityType.Builder.of(
+                    (pos, state) -> new SmallElectricPoleBlockEntity(pos, state), modBlocks.SMALL_ELECTRIC_POLE.get()).build(null));
 
     public static void register(final IEventBus eventBus) {
         modBlockEntities.BLOCK_ENTITIES.register(eventBus);

@@ -18,6 +18,7 @@ import org.minetrio1256.craftdustry.block.custom.belts.FastBelts;
 import org.minetrio1256.craftdustry.block.custom.belts.TurboBelts;
 import org.minetrio1256.craftdustry.block.custom.chests.IronChest;
 import org.minetrio1256.craftdustry.block.custom.chests.WoodenChest;
+import org.minetrio1256.craftdustry.block.custom.electrical.SmallElectricPole;
 import org.minetrio1256.craftdustry.block.custom.underground.UnderGroundBeltInput;
 import org.minetrio1256.craftdustry.block.custom.underground.UnderGroundBeltOutput;
 import org.minetrio1256.craftdustry.item.modItems;
@@ -44,7 +45,8 @@ public class modBlocks {
             () -> new UnderGroundBeltInput(BlockBehaviour.Properties.of().strength(2.0f).requiresCorrectToolForDrops().randomTicks()));
     public static final RegistryObject<Block> UNDER_GROUND_BELT_OUTPUT = modBlocks.registerBlock("under_ground_output_belt",
             () -> new UnderGroundBeltOutput(BlockBehaviour.Properties.of().strength(2.0f).requiresCorrectToolForDrops().randomTicks()));
-
+    public static final RegistryObject<Block> SMALL_ELECTRIC_POLE = modBlocks.registerBlock("small_electric_pole",
+            () -> new SmallElectricPole(BlockBehaviour.Properties.of().strength(2.0f).requiresCorrectToolForDrops().randomTicks()));
 
     private static <T extends Block>RegistryObject<T> registerBlock(final String name, final Supplier<T> block) {
         final RegistryObject<T> toReturn = modBlocks.BLOCKS.register(name, block);
