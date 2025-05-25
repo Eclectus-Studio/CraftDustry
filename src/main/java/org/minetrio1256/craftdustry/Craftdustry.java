@@ -57,7 +57,7 @@ public class Craftdustry {
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
         // Do something when the server starts
-        LOGGER.info("HELLO from server starting");
+        LOGGER.info("Staring Craftdustry Server Side Stuff");
     }
 
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -66,8 +66,7 @@ public class Craftdustry {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             // Some client setup code
-            LOGGER.info("HELLO FROM CLIENT SETUP");
-            LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+            LOGGER.info("Craftdustry Client Sided Code Is Starting!");
             MenuScreens.register(ModMenuTypes.IRON_CHEST_MENU.get(), IronChestScreen::new);
             MenuScreens.register(ModMenuTypes.WOODEN_CHEST_MENU.get(), WoodenChestScreen::new);
         }
