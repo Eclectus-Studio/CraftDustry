@@ -9,7 +9,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.minetrio1256.craftdustry.block.entity.modBlockEntities;
-import org.minetrio1256.craftdustry.world.nbt.ElectricID;
 
 import java.util.*;
 
@@ -79,7 +78,7 @@ public class SmallElectricPoleBlockEntity extends BlockEntity {
             Map.Entry<Integer, SmallElectricPoleBlockEntity> entry = nearbyNetworks.firstEntry();
             int chosenId = entry.getKey();
             setNetworkId(chosenId);
-            ElectricID.get(level).setDirty();
+            //ElectricID.get(level).setDirty();
 
             // Store all connections
             for (SmallElectricPoleBlockEntity other : nearbyNetworks.values()) {
@@ -92,8 +91,8 @@ public class SmallElectricPoleBlockEntity extends BlockEntity {
 
         } else {
             // No nearby networks, create new one
-            int newId = ElectricID.get(level).next();
-            setNetworkId(newId);
+            //int newId = ElectricID.get(level).next();
+            //setNetworkId(newId);
         }
 
         setChanged();
