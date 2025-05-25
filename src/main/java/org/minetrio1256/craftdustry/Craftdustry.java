@@ -2,9 +2,13 @@ package org.minetrio1256.craftdustry;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.LevelResource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -12,6 +16,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.minetrio1256.craftdustry.api.electric.ElectricalNetworkSerializer;
 import org.minetrio1256.craftdustry.block.entity.modBlockEntities;
 import org.minetrio1256.craftdustry.block.modBlocks;
 import org.minetrio1256.craftdustry.item.modItems;
@@ -19,6 +24,8 @@ import org.minetrio1256.craftdustry.screen.ModMenuTypes;
 import org.minetrio1256.craftdustry.screen.chests.iron_chest.IronChestScreen;
 import org.minetrio1256.craftdustry.screen.chests.wooden_chest.WoodenChestScreen;
 import org.slf4j.Logger;
+
+import java.nio.file.Path;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(Craftdustry.MOD_ID)
@@ -57,6 +64,8 @@ public class Craftdustry {
     public void onServerStarting(ServerStartingEvent event) {
         // Do something when the server starts
         LOGGER.info("Staring Craftdustry Server Side Stuff");
+        Path worldSavePath = event.getServer().getWorldPath(LevelResource.ROOT);
+        ElectricalNetworkSerializer.init(worldSavePath);
     }
 
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -69,5 +78,21 @@ public class Craftdustry {
             MenuScreens.register(ModMenuTypes.IRON_CHEST_MENU.get(), IronChestScreen::new);
             MenuScreens.register(ModMenuTypes.WOODEN_CHEST_MENU.get(), WoodenChestScreen::new);
         }
+    }
+
+    @SubscribeEvent
+    public void onWorldLoad(LevelEvent.Load event) {
+        if (!(event.getLevel() instanceof ServerLevel level)) return;
+        if (!level.dimension().equals(Level.OVERWORLD)) return;
+
+        ElectricalNetworkSerializer.loadFromSerializer();
+    }
+
+    @SubscribeEvent
+    public void onWorldSave(LevelEvent.Save event) {
+        if (!(event.getLevel() instanceof ServerLevel level)) return;
+        if (!level.dimension().equals(Level.OVERWORLD)) return;
+
+        ElectricalNetworkSerializer.saveToSerializer();
     }
 }
