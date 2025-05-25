@@ -1,4 +1,4 @@
-package org.minetrio1256.craftdustry.api.machine;
+package org.minetrio1256.craftdustry.api;
 
 public class Durability {
     private int max;
