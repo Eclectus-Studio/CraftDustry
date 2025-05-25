@@ -7,7 +7,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.LevelResource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -19,6 +21,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.minetrio1256.craftdustry.api.electric.ElectricalNetworkSerializer;
 import org.minetrio1256.craftdustry.block.entity.modBlockEntities;
 import org.minetrio1256.craftdustry.block.modBlocks;
+import org.minetrio1256.craftdustry.command.GetCapesCommand;
+import org.minetrio1256.craftdustry.data.cape.Capes;
 import org.minetrio1256.craftdustry.item.modItems;
 import org.minetrio1256.craftdustry.screen.ModMenuTypes;
 import org.minetrio1256.craftdustry.screen.chests.iron_chest.IronChestScreen;
@@ -51,6 +55,13 @@ public class Craftdustry {
         modBlockEntities.register(modEventBus);
         modItems.register(modEventBus);
         ModMenuTypes.register(modEventBus);
+        MinecraftForge.EVENT_BUS.addListener((AddReloadListenerEvent event) -> {
+            event.addListener(Capes.INSTANCE);
+        });
+        MinecraftForge.EVENT_BUS.addListener((RegisterCommandsEvent event) -> {
+            GetCapesCommand.register(event.getDispatcher());
+        });
+
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -85,8 +96,12 @@ public class Craftdustry {
         if (!(event.getLevel() instanceof ServerLevel level)) return;
         if (!level.dimension().equals(Level.OVERWORLD)) return;
 
+        Path worldSavePath = level.getServer().getWorldPath(LevelResource.ROOT);
+        ElectricalNetworkSerializer.init(worldSavePath);
+
         ElectricalNetworkSerializer.loadFromSerializer();
     }
+
 
     @SubscribeEvent
     public void onWorldSave(LevelEvent.Save event) {

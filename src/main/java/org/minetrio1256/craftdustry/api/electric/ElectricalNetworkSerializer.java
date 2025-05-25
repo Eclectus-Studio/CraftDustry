@@ -7,6 +7,8 @@ import net.minecraft.server.level.ServerLevel;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +21,26 @@ public class ElectricalNetworkSerializer {
 
     public static void init(Path worldSaveDirectory) {
         saveDir = worldSaveDirectory.resolve("craftdustry");
-        saveDir.toFile().mkdirs();
+        Path filePath = saveDir.resolve("electrical_networks.json");       // Replace with your file name
+
+        try {
+            // Create the folder if it doesn't exist
+            if (!Files.exists(saveDir)) {
+                Files.createDirectories(saveDir);
+                System.out.println("Created folder: " + saveDir);
+            }
+
+            // Create the file if it doesn't exist
+            if (!Files.exists(filePath)) {
+                Files.createFile(filePath);
+                System.out.println("Created file: " + filePath);
+            } else {
+                System.out.println("File already exists: " + filePath);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void loadFromSerializer() {
