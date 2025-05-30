@@ -2,6 +2,7 @@ package org.minetrio1256.craftdustry;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.LevelResource;
@@ -34,7 +35,6 @@ import java.nio.file.Path;
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(Craftdustry.MOD_ID)
 public class Craftdustry {
-
     // Define mod id in a common place for everything to reference
     public static final String MOD_ID = "craftdustry";
     // Directly reference a slf4j logger

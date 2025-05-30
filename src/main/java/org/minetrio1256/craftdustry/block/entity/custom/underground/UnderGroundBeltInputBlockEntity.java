@@ -134,14 +134,11 @@ public class UnderGroundBeltInputBlockEntity extends BlockEntity implements IIte
                 }
             }
         } else if (blockInFrontTwo instanceof UnderGroundBeltOutputBlockEntity){
-            System.out.println("1");
             UnderGroundBeltOutputBlockEntity underGroundBeltOutputBlockEntity = (UnderGroundBeltOutputBlockEntity) blockInFrontTwo;
 
             final ItemStack lastItem = this.itemHandler.getStackInSlot(7);
             if (!lastItem.isEmpty()) {
-                System.out.println("2");
                 if(underGroundBeltOutputBlockEntity.insertInRowOne(lastItem)){
-                    System.out.println("3");
                     this.itemHandler.setStackInSlot(this.itemHandler.getSlots() - 1, ItemStack.EMPTY); // Remove from belt
                 }
             }

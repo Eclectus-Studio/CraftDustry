@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.minetrio1256.craftdustry.Craftdustry;
+import org.minetrio1256.craftdustry.data.player.UnlockedCape;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,19 +33,18 @@ public abstract class AbstractClientPlayerMixin extends Player {
 
     @Inject(method = "getSkin", at = @At("TAIL"), cancellable = true)
     public void getSkinMixin(CallbackInfoReturnable<PlayerSkin> cir) {
-        ResourceLocation cape = ResourceLocation.fromNamespaceAndPath(Craftdustry.MOD_ID, "textures/entity/capes/xmas.png");
-        PlayerInfo playerInfo = this.getPlayerInfo();
-        if (playerInfo != null) {
-            UUID playerUUID = playerInfo.getProfile().getId();
+        PlayerInfo info = this.getPlayerInfo();
+        if (info == null) return;
 
-            //if (CapeRegistry.mapContainsPlayer(playerUUID)) {
-            //}
+        UUID playerUUID = info.getProfile().getId();
+        ResourceLocation capeId = ResourceLocation.fromNamespaceAndPath(Craftdustry.MOD_ID, "textures/cape/xmas.png");
 
+        if (UnlockedCape.hasCape(playerUUID, capeId)) {
             PlayerSkin playerSkin = cir.getReturnValue();
             cir.setReturnValue(new PlayerSkin(playerSkin.texture(),
                     playerSkin.textureUrl(),
-                    cape,
-                    playerSkin.elytraTexture(),
+                    capeId,
+                    capeId,
                     playerSkin.model(),
                     playerSkin.secure()));
         }
