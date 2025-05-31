@@ -23,8 +23,10 @@ import org.minetrio1256.craftdustry.api.electric.ElectricalNetworkSerializer;
 import org.minetrio1256.craftdustry.block.entity.modBlockEntities;
 import org.minetrio1256.craftdustry.block.modBlocks;
 import org.minetrio1256.craftdustry.command.GetCapesCommand;
+import org.minetrio1256.craftdustry.command.SetCapeCommand;
 import org.minetrio1256.craftdustry.data.cape.Capes;
 import org.minetrio1256.craftdustry.item.modItems;
+import org.minetrio1256.craftdustry.packet.CraftdustryNetworking;
 import org.minetrio1256.craftdustry.screen.ModMenuTypes;
 import org.minetrio1256.craftdustry.screen.chests.iron_chest.IronChestScreen;
 import org.minetrio1256.craftdustry.screen.chests.wooden_chest.WoodenChestScreen;
@@ -60,12 +62,14 @@ public class Craftdustry {
         });
         MinecraftForge.EVENT_BUS.addListener((RegisterCommandsEvent event) -> {
             GetCapesCommand.register(event.getDispatcher());
+            SetCapeCommand.register(event.getDispatcher());
         });
 
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        // Some common setup code
+        // Networking
+        CraftdustryNetworking.register();
     }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {

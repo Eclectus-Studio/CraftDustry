@@ -9,7 +9,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.minetrio1256.craftdustry.Craftdustry;
+import org.minetrio1256.craftdustry.api.CapeRegistry;
+import org.minetrio1256.craftdustry.client.ClientCapeCache;
 import org.minetrio1256.craftdustry.data.player.UnlockedCape;
+import org.minetrio1256.craftdustry.packet.CraftdustryNetworking;
+import org.minetrio1256.craftdustry.packet.capes.CapeUserGet;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -36,17 +40,24 @@ public abstract class AbstractClientPlayerMixin extends Player {
         PlayerInfo info = this.getPlayerInfo();
         if (info == null) return;
 
-        UUID playerUUID = info.getProfile().getId();
-        ResourceLocation capeId = ResourceLocation.fromNamespaceAndPath(Craftdustry.MOD_ID, "textures/cape/xmas.png");
+        UUID uuid = this.getUUID();
+        ResourceLocation capeId = ClientCapeCache.get(uuid);
 
-        if (UnlockedCape.hasCape(playerUUID, capeId)) {
-            PlayerSkin playerSkin = cir.getReturnValue();
-            cir.setReturnValue(new PlayerSkin(playerSkin.texture(),
-                    playerSkin.textureUrl(),
-                    capeId,
-                    capeId,
-                    playerSkin.model(),
-                    playerSkin.secure()));
+        if (capeId == null && !ClientCapeCache.has(uuid)) {
+            // Send request once
+            CraftdustryNetworking.sendToServer(new CapeUserGet(uuid));
+            ClientCapeCache.set(uuid, null); // Avoid spamming
         }
+
+        PlayerSkin skin = cir.getReturnValue();
+        cir.setReturnValue(new PlayerSkin(
+                skin.texture(),
+                skin.textureUrl(),
+                capeId != null ? capeId : skin.capeTexture(), // fallback
+                capeId != null ? capeId : skin.elytraTexture(),
+                skin.model(),
+                skin.secure()
+        ));
     }
+
 }
