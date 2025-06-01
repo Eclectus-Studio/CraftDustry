@@ -35,29 +35,28 @@ public abstract class AbstractClientPlayerMixin extends Player {
         super(pLevel, pPos, pYRot, pGameProfile);
     }
 
-    @Inject(method = "getSkin", at = @At("TAIL"), cancellable = true)
-    public void getSkinMixin(CallbackInfoReturnable<PlayerSkin> cir) {
-        PlayerInfo info = this.getPlayerInfo();
-        if (info == null) return;
+    @Inject(method = "getSkin", at = @At("RETURN"), cancellable = false)
+    public void overrideCape(CallbackInfoReturnable<PlayerSkin> cir) {
+        UUID uuid = playerInfo.getProfile().getId();
+        ResourceLocation customCape = ClientCapeCache.get(uuid);
 
-        UUID uuid = this.getUUID();
-        ResourceLocation capeId = ClientCapeCache.get(uuid);
-
-        if (capeId == null && !ClientCapeCache.has(uuid)) {
-            // Send request once
+        if (customCape == null && !ClientCapeCache.has(uuid)) {
+            // Request once
             CraftdustryNetworking.sendToServer(new CapeUserGet(uuid));
-            ClientCapeCache.set(uuid, null); // Avoid spamming
+            ClientCapeCache.set(uuid, null); // avoid spamming
         }
 
-        PlayerSkin skin = cir.getReturnValue();
-        cir.setReturnValue(new PlayerSkin(
-                skin.texture(),
-                skin.textureUrl(),
-                capeId != null ? capeId : skin.capeTexture(), // fallback
-                capeId != null ? capeId : skin.elytraTexture(),
-                skin.model(),
-                skin.secure()
-        ));
+        if (customCape != null) {
+            PlayerSkin old = cir.getReturnValue();
+            // Replace only the cape/elytra
+            cir.setReturnValue(new PlayerSkin(
+                    old.texture(),
+                    old.textureUrl(),
+                    customCape, // <- Custom cape
+                    customCape, // <- Elytra uses same
+                    old.model(),
+                    old.secure()
+            ));
+        }
     }
-
 }

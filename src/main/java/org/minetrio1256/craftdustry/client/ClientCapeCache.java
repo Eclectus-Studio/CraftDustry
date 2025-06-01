@@ -20,4 +20,8 @@ public class ClientCapeCache {
     public static boolean has(UUID uuid) {
         return CAPE_MAP.containsKey(uuid);
     }
+
+    public static void clear(){
+        CAPE_MAP.clear();
+    }
 }

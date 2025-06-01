@@ -5,8 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "craftdustry.refmap.json",
   "mixins": [
-    "AbstractClientPlayerMixin",
-    "PlayerInfoMixin"
+    "AbstractClientPlayerMixin"
   ],
   "client": [
   ],
