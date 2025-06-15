@@ -37,26 +37,33 @@ public abstract class AbstractClientPlayerMixin extends Player {
 
     @Inject(method = "getSkin", at = @At("TAIL"), cancellable = true)
     public void getSkinMixin(CallbackInfoReturnable<PlayerSkin> cir) {
+        System.out.println("Skin mixin");
         PlayerInfo info = this.getPlayerInfo();
         if (info == null) return;
+        System.out.println("Loading client player mixin for " + info.getProfile().getName());
 
         UUID uuid = this.getUUID();
-        ResourceLocation capeId = ClientCapeCache.get(uuid);
+        //ResourceLocation capeId = ClientCapeCache.get(uuid);
+        ResourceLocation xmas = ResourceLocation.fromNamespaceAndPath("craftdustry","textures/cape/xmas.png");
 
+        /*
         if (capeId == null && !ClientCapeCache.has(uuid)) {
             // Send request once
             CraftdustryNetworking.sendToServer(new CapeUserGet(uuid));
             ClientCapeCache.set(uuid, null); // Avoid spamming
         }
-
+        */
         PlayerSkin skin = cir.getReturnValue();
         cir.setReturnValue(new PlayerSkin(
                 skin.texture(),
                 skin.textureUrl(),
+                /*
                 capeId != null ? capeId : skin.capeTexture(), // fallback
-                capeId != null ? capeId : skin.elytraTexture(),
+                capeId != null ? capeId : skin.elytraTexture(), */
+                xmas,
+                xmas,
                 skin.model(),
-                skin.secure()
+                false
         ));
     }
 

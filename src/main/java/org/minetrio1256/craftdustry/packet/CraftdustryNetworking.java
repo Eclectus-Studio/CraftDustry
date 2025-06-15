@@ -6,6 +6,7 @@ import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.SimpleChannel;
 import org.minetrio1256.craftdustry.Craftdustry;
+import org.minetrio1256.craftdustry.client.ClientReloadCape;
 import org.minetrio1256.craftdustry.packet.capes.CapeReload;
 import org.minetrio1256.craftdustry.packet.capes.CapeUserGet;
 import org.minetrio1256.craftdustry.packet.capes.CapeUserSend;
@@ -22,7 +23,10 @@ public class CraftdustryNetworking {
         CHANNEL.messageBuilder(CapeReload.class, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder(CapeReload::encode)
                 .decoder(CapeReload::new)
-                .consumerMainThread(CapeReload::handle)
+                .consumerMainThread((msg, ctx) -> {
+                    ClientReloadCape.reload(); // Do client-only stuff here
+                    ctx.setPacketHandled(true);
+                })
                 .add();
 
         CHANNEL.messageBuilder(CapeUserGet.class, NetworkDirection.PLAY_TO_SERVER)
