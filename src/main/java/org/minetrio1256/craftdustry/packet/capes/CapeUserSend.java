@@ -30,10 +30,12 @@ public class CapeUserSend {
     }
 
     public void handle(CustomPayloadEvent.Context context) {
+        System.out.println("cape sent received");
         context.enqueueWork(() -> {
             DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
                 ResourceLocation location = ResourceLocation.tryParse(texture);
                 if (location != null) {
+                    System.out.println("location isnt null");
                     ClientCapeCache.set(target, location);
                 }
             });

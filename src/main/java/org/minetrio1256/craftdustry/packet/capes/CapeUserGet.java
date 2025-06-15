@@ -26,15 +26,18 @@ public class CapeUserGet {
     }
 
     public void handle(CustomPayloadEvent.Context context) {
+        System.out.println("Cape user get received");
         context.enqueueWork(() -> {
             ServerPlayer sender = context.getSender();
             if (sender == null) return;
-
+            System.out.println("sender is not null");
             var capeId = CapeRegistry.getCape(target);
             if (capeId == null) return;
+            System.out.println("Requested cape isnt null");
 
             Cape cape = Capes.INSTANCE.getCape(capeId);
             if (cape == null) return;
+            System.out.println("Cape is in registry");
 
             CraftdustryNetworking.sendToPlayer(new CapeUserSend(target, cape.texture), sender);
         });
