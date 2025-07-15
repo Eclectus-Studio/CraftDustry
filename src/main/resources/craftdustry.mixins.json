@@ -5,9 +5,9 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "craftdustry.refmap.json",
   "mixins": [
-    "AbstractClientPlayerMixin"
   ],
   "client": [
+    "CapeLayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

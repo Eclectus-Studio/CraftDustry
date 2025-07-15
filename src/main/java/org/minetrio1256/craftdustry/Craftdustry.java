@@ -2,6 +2,7 @@ package org.minetrio1256.craftdustry;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.LevelResource;

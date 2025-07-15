@@ -110,4 +110,8 @@ public class SmallElectricPoleBlockEntity extends BlockEntity {
     public Set<BlockPos> getConnectedPoles() {
         return connectedPoles;
     }
+
+    public void updateNetwork(){
+
+    }
 }
